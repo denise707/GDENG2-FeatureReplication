@@ -5,6 +5,8 @@
 #include "ConstantBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include"VertexShader.h"
+#include"PixelShader.h"
 #include <vector>
 using namespace std;
 
@@ -18,7 +20,7 @@ public:
 	~AGameObject();
 
 	virtual void update(float deltaTime);
-	virtual void draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader);
+	virtual void draw(int width, int height);
 
 	void setPosition(float x, float y, float z);
 	void setPosition(Vector3D pos);
@@ -35,6 +37,9 @@ public:
 	VertexBuffer* getVertexBuffer();
 	IndexBuffer* getIndexBuffer();
 	ConstantBuffer* getConstantBuffer();
+
+	VertexShader* getVertexShader();
+	PixelShader* getPixelShader();
 
 	void reset();
 	bool isSelected = false;
@@ -67,6 +72,12 @@ protected:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 	ConstantBuffer* constantBuffer;
+
+	VertexShader* vertexShader;
+	PixelShader* pixelShader;
+
+	void* shaderByteCode = nullptr;
+	size_t sizeShader = 0;
 
 
 

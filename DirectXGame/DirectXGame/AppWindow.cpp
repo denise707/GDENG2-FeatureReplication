@@ -63,22 +63,22 @@ void AppWindow::onCreate()
 	//Initialize Scene Camera
 	SceneCameraHandler::initialize();
 
-	shader_byte_code = nullptr;
-	size_shader = 0;
+	/*shader_byte_code = nullptr;
+	size_shader = 0;*/
 
-	//Vertex Shader
-	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
+	////Vertex Shader
+	//GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	//m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 
 	//Create Object and Gizmo Instances
 	for(int i = 0; i < 3; i++)
 	{
 		//Cube 
-		Cube* cube = new Cube("Cube", shader_byte_code, size_shader);
+		Cube* cube = new Cube("Cube");
 		this->objList.push_back((cube));
 
 		//Gizmo
-		OutlineGizmo* outline = new OutlineGizmo("OutlineGizmo", shader_byte_code, size_shader);
+		OutlineGizmo* outline = new OutlineGizmo("OutlineGizmo");
 		this->outlineList.push_back((outline));
 	}
 
@@ -92,13 +92,13 @@ void AppWindow::onCreate()
 		this->outlineList[2]->setPosition(0, 0, 1);
 	}
 
-	//Release Compiled Shader
-	GraphicsEngine::get()->releaseCompiledShader();
+	////Release Compiled Shader
+	//GraphicsEngine::get()->releaseCompiledShader();
 
-	//Pixel Shader
-	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
-	GraphicsEngine::get()->releaseCompiledShader();
+	////Pixel Shader
+	//GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
+	//m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
+	//GraphicsEngine::get()->releaseCompiledShader();
 
 	// Initialize UIManager
 	UIManager::getInstance()->initialize(Window::getHWND());
@@ -121,9 +121,7 @@ void AppWindow::onUpdate()
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
 
-	//SET DEFAULT SHADER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(m_vs);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_ps);
+
 
 	//UPDATE CAMERA
 	SceneCameraHandler::getInstance()->update(EngineTime::getDeltaTime(), width, height);
@@ -144,7 +142,7 @@ void AppWindow::onUpdate()
 	for (int i = 0; i < objList.size(); i++)
 	{
 		if (objList[i]->isSelected)
-			objList[i]->draw(width, height, m_vs, m_ps);
+			objList[i]->draw(width, height);
 	}
 
 	//Set Stencil State to Off
@@ -154,7 +152,7 @@ void AppWindow::onUpdate()
 	//Draw All Objects
 	for (int i = 0; i < objList.size(); i++)
 	{
-		objList[i]->draw(width, height, m_vs, m_ps);
+		objList[i]->draw(width, height);
 	}
 
 	//Set Stencil State to Mask
@@ -167,7 +165,7 @@ void AppWindow::onUpdate()
 		if (objList[i]->isSelected)
 		{
 			outlineList[i]->isSelected = true;
-			outlineList[i]->draw(width, height, m_vs, m_ps);
+			outlineList[i]->draw(width, height);
 		}
 	}
 	#pragma endregion
@@ -182,8 +180,7 @@ void AppWindow::onDestroy()
 {
 	Window::onDestroy();
 	m_swap_chain->release();
-	m_vs->release();
-	m_ps->release();
+
 	GraphicsEngine::get()->release();
 }
 

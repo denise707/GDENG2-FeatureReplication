@@ -66,12 +66,12 @@ void DeviceContext::setViewportSize(UINT width, UINT height)
 
 void DeviceContext::setVertexShader(VertexShader* vertex_shader)
 {
-	m_device_context->VSSetShader(vertex_shader->m_vs, nullptr, 0);
+	m_device_context->VSSetShader(vertex_shader->vertexShader, nullptr, 0);
 }
 
 void DeviceContext::setPixelShader(PixelShader* pixel_shader)
 {
-	m_device_context->PSSetShader(pixel_shader->m_ps, nullptr, 0);
+	m_device_context->PSSetShader(pixel_shader->pixelShader, nullptr, 0);
 }
 
 void DeviceContext::setConstantBuffer(VertexShader* vertex_shader, ConstantBuffer* buffer)

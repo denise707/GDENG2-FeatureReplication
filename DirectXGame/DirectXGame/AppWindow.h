@@ -62,8 +62,7 @@ public:
 
 private:
 	SwapChain* m_swap_chain;
-	VertexShader* m_vs;
-	PixelShader* m_ps;
+	
 private:
 	//Instantiated objects
 	vector<AGameObject*> objList;

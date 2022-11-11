@@ -6,7 +6,7 @@
 #include "SceneCameraHandler.h"
 
 //Utils* utils = new Utils();
-Cube::Cube(string name, void* shaderByteCode, size_t sizeShader) :AGameObject(name)
+Cube::Cube(string name) :AGameObject(name)
 {
 	//Create buffers for drawing. Vertex data that needs to be drawn are temporarily placed here.
 	Vertex vertex_list[] =
@@ -23,9 +23,6 @@ Cube::Cube(string name, void* shaderByteCode, size_t sizeShader) :AGameObject(na
 		{ Vector3D(-0.5f,0.5f,0.5f),   Vector3D(0,0,1),  Vector3D(1,0,0) },
 		{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(1,1,0), Vector3D(0,0,1) }
 	};
-
-	this->vertexBuffer = GraphicsEngine::get()->createVertexBuffer();
-	this->vertexBuffer->load(vertex_list, sizeof(Vertex), ARRAYSIZE(vertex_list), shaderByteCode, sizeShader);
 
 	unsigned int index_list[] =
 	{
@@ -49,8 +46,24 @@ Cube::Cube(string name, void* shaderByteCode, size_t sizeShader) :AGameObject(na
 		1, 0, 7
 	};
 
+	//Index Buffer
 	this->indexBuffer = GraphicsEngine::get()->createIndexBuffer();
 	this->indexBuffer->load(index_list, ARRAYSIZE(index_list));
+
+	//Vertex Shader
+	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &sizeShader);
+	vertexShader = GraphicsEngine::get()->createVertexShader(shaderByteCode, sizeShader);
+
+	//Vertex Buffer
+	this->vertexBuffer = GraphicsEngine::get()->createVertexBuffer();
+	this->vertexBuffer->load(vertex_list, sizeof(Vertex), ARRAYSIZE(vertex_list), shaderByteCode, sizeShader);
+
+	GraphicsEngine::get()->releaseCompiledShader();
+
+	//Pixel Shader
+	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shaderByteCode, &sizeShader);
+	pixelShader = GraphicsEngine::get()->createPixelShader(shaderByteCode, sizeShader);
+	GraphicsEngine::get()->releaseCompiledShader();
 
 	//Create constant buffer
 	CBData cbData = {};
@@ -65,6 +78,9 @@ Cube::~Cube()
 {
 	this->vertexBuffer->release();
 	this->indexBuffer->release();
+	this->vertexShader->release();
+	this->pixelShader->release();
+	this->constantBuffer->release();
 }
 
 void Cube::update(float delta_time)
@@ -72,7 +88,7 @@ void Cube::update(float delta_time)
 
 }
 
-void Cube::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
+void Cube::draw(int width, int height)
 {
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
@@ -117,8 +133,14 @@ void Cube::draw(int width, int height, VertexShader* vertex_shader, PixelShader*
 	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
 
 	this->constantBuffer->update(deviceContext, &cbData);
-	deviceContext->setConstantBuffer(vertex_shader, this->constantBuffer);
-	deviceContext->setConstantBuffer(pixel_shader, this->constantBuffer);
+
+	//SET DEFAULT SHADER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(vertexShader);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
+
+	//SET DEFAULT BUFFER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
+	deviceContext->setConstantBuffer(vertexShader, this->constantBuffer);
+	deviceContext->setConstantBuffer(pixelShader, this->constantBuffer);
 
 	deviceContext->setIndexBuffer(this->indexBuffer);
 	deviceContext->setVertexBuffer(this->vertexBuffer);

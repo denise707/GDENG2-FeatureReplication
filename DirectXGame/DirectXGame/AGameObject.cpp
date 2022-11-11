@@ -17,7 +17,7 @@ void AGameObject::update(float deltaTime)
 {
 }
 
-void AGameObject::draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader)
+void AGameObject::draw(int width, int height)
 {
 }
 
@@ -86,6 +86,16 @@ string AGameObject::getName()
 	return this->name;
 }
 
+
+VertexShader* AGameObject::getVertexShader()
+{
+	return vertexShader;
+}
+
+PixelShader* AGameObject::getPixelShader()
+{
+	return pixelShader;
+}
 
 void AGameObject::reset()
 {

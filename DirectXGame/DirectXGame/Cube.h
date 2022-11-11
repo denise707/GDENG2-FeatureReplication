@@ -6,14 +6,14 @@
 class Cube : public AGameObject
 {
 public:
-	Cube(string name, void* shaderByteCode, size_t sizeShader);
-	Cube(vector<Vertex> v1, vector<Vertex> v2, string name, void* shaderByteCode, size_t sizeShader);
+	Cube(string name);
+	//Cube(vector<Vertex> v1, vector<Vertex> v2, string name, void* shaderByteCode, size_t sizeShader);
 	~Cube();
 
 	void update(float deltaTime) override;
-	void draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader) override;
+	void draw(int width, int height) override;
 	void setAnimSpeed(float speed);
-	vector<Vertex> getVertexList();
+	//vector<Vertex> getVertexList();
 private:
 	float speed = 4.0f;
 	float deltaTime = 0;
