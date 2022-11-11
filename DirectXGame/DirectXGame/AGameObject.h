@@ -2,7 +2,10 @@
 #include <string>
 #include "Vector3D.h"
 #include "Matrix4x4.h"
-
+#include "ConstantBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
+#include <vector>
 using namespace std;
 
 class VertexShader;
@@ -28,6 +31,10 @@ public:
 	void setRotation(float x, float y, float z);
 	void setRotation(Vector3D rot);
 	Vector3D getLocalRotation();
+	
+	VertexBuffer* getVertexBuffer();
+	IndexBuffer* getIndexBuffer();
+	ConstantBuffer* getConstantBuffer();
 
 	void reset();
 	bool isSelected = false;
@@ -49,12 +56,19 @@ public:
 		float time;
 	};
 
+
 protected:
 	string name;
 	Vector3D localPosition;
 	Vector3D localScale;
 	Vector3D localRotation;
 	Matrix4x4 localMatrix;
+
+	VertexBuffer* vertexBuffer;
+	IndexBuffer* indexBuffer;
+	ConstantBuffer* constantBuffer;
+
+
 
 };
 

@@ -66,10 +66,26 @@ Vector3D AGameObject::getLocalRotation()
 	return this->localRotation;
 }
 
+VertexBuffer* AGameObject::getVertexBuffer()
+{
+	return vertexBuffer;
+}
+
+IndexBuffer* AGameObject::getIndexBuffer()
+{
+	return indexBuffer;
+}
+
+ConstantBuffer* AGameObject::getConstantBuffer()
+{
+	return constantBuffer;
+}
+
 string AGameObject::getName()
 {
 	return this->name;
 }
+
 
 void AGameObject::reset()
 {
