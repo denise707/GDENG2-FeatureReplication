@@ -7,7 +7,7 @@
 #include <unordered_map>
 
 class MergedActor :
-    public AGameObject
+	public AGameObject
 {
 public:
 	MergedActor(string name, void* shaderByteCode, size_t sizeShader, AGameObject* obj1, AGameObject* obj2);
@@ -16,7 +16,8 @@ public:
 	~MergedActor();
 
 	void update(float deltaTime) override;
-	void draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader) override;
+	void draw(int width, int height) override;
+	void drawGizmo(int width, int height) override;
 	void setAnimSpeed(float speed);
 	vector<Vertex> getVertexList();
 private:

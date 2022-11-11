@@ -1,15 +1,16 @@
 #pragma once
 #include <string>
-#include "Vector3D.h"
 #include "Vector2D.h"
-
+#include "Vector3D.h"
 #include "Matrix4x4.h"
 #include "ConstantBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
 #include"VertexShader.h"
 #include"PixelShader.h"
+#include "TexturedVertexBuffer.h"
 #include <vector>
+#include <array>
 using namespace std;
 
 class VertexShader;
@@ -23,6 +24,8 @@ public:
 
 	virtual void update(float deltaTime);
 	virtual void draw(int width, int height);
+	virtual void drawGizmo(int width, int height);
+
 
 	void setPosition(float x, float y, float z);
 	void setPosition(Vector3D pos);
@@ -35,8 +38,10 @@ public:
 	void setRotation(float x, float y, float z);
 	void setRotation(Vector3D rot);
 	Vector3D getLocalRotation();
-	
+
 	VertexBuffer* getVertexBuffer();
+	VertexBuffer* getGizmoVertexBuffer();
+
 	IndexBuffer* getIndexBuffer();
 	ConstantBuffer* getConstantBuffer();
 
@@ -60,7 +65,6 @@ public:
 		Vector2D texCoord;
 	};
 
-
 	_declspec(align(16))
 		struct CBData
 	{
@@ -70,15 +74,17 @@ public:
 		float time;
 	};
 
-
+	Matrix4x4 localMatrix;
 protected:
 	string name;
 	Vector3D localPosition;
 	Vector3D localScale;
 	Vector3D localRotation;
-	Matrix4x4 localMatrix;
+
 
 	VertexBuffer* vertexBuffer;
+	VertexBuffer* gizmoVertexBuffer;
+
 	IndexBuffer* indexBuffer;
 	ConstantBuffer* constantBuffer;
 

@@ -126,7 +126,7 @@ void AppWindow::onCreate()
 
 	int width = 0;
 	int height = 0;
-	bool ret = LoadTextureFromFile("C:\\Users\\Setiel Olivarez\\Desktop\\School\\GDENG2\\Project\\GDENG2-FeatureReplication\\DirectXGame\\DirectXGame\\Logo.jpg", &myTexture, &width, &height);
+	bool ret = LoadTextureFromFile("Logo.jpg", &myTexture, &width, &height);
 	IM_ASSERT(ret);
 
 	quad->myTexture = myTexture;
@@ -200,7 +200,7 @@ void AppWindow::onUpdate()
 		if (objList[i]->isSelected)
 		{
 			outlineList[i]->isSelected = true;
-			outlineList[i]->draw(width, height);
+			objList[i]->drawGizmo(width, height);
 		}
 	}
 	#pragma endregion

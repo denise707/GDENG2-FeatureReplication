@@ -21,6 +21,11 @@ void AGameObject::draw(int width, int height)
 {
 }
 
+void AGameObject::drawGizmo(int width, int height)
+{
+
+}
+
 void AGameObject::setPosition(float x, float y, float z)
 {
 	this->localPosition = Vector3D(x, y, z);
@@ -69,6 +74,11 @@ Vector3D AGameObject::getLocalRotation()
 VertexBuffer* AGameObject::getVertexBuffer()
 {
 	return vertexBuffer;
+}
+
+VertexBuffer* AGameObject::getGizmoVertexBuffer()
+{
+	return gizmoVertexBuffer;
 }
 
 IndexBuffer* AGameObject::getIndexBuffer()
