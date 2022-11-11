@@ -83,9 +83,7 @@ Plane::~Plane()
 
 void Plane::update(float delta_time)
 {
-	//SET DEFAULT SHADER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(vertexShader);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
+
 }
 
 void Plane::draw(int width, int height)
@@ -135,6 +133,9 @@ void Plane::draw(int width, int height)
 
 	this->constantBuffer->update(deviceContext, &cbData);
 
+	//SET DEFAULT SHADER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(vertexShader);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
 
 	deviceContext->setConstantBuffer(vertexShader, this->constantBuffer);
 	deviceContext->setConstantBuffer(pixelShader, this->constantBuffer);

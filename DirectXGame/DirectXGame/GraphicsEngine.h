@@ -10,6 +10,7 @@ class IndexBuffer;
 class ConstantBuffer;
 class VertexShader;
 class PixelShader;
+class TexturedVertexBuffer;
 
 class GraphicsEngine
 {
@@ -24,6 +25,7 @@ public:
 	SwapChain* createSwapChain();
 	DeviceContext* getImmediateDeviceContext();
 	VertexBuffer* createVertexBuffer();
+	TexturedVertexBuffer* createTexturedVertexBuffer();
 	IndexBuffer* createIndexBuffer();
 	ConstantBuffer* createConstantBuffer();
 	VertexShader* createVertexShader(const void* shader_byte_code, size_t byte_code_size);
@@ -54,11 +56,16 @@ private:
 	ID3DBlob* m_psblob = nullptr;
 	ID3D11VertexShader* vertexShader = nullptr;
 	ID3D11PixelShader* pixelShader = nullptr;
+
+
+
 private:
 	friend class SwapChain;
 	friend class VertexBuffer;
+	friend class TexturedVertexBuffer;
 	friend class IndexBuffer;
 	friend class ConstantBuffer;
 	friend class VertexShader;
 	friend class PixelShader;
+
 };

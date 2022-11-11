@@ -4,6 +4,8 @@
 #include <ostream>
 
 #include "SwapChain.h"
+#include "TexturedVertexBuffer.h"
+
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "ConstantBuffer.h"
@@ -24,6 +26,14 @@ void DeviceContext::clearRenderTargetColor(SwapChain* swap_chain, float red, flo
 }
 
 void DeviceContext::setVertexBuffer(VertexBuffer* vertex_buffer)
+{
+	UINT stride = vertex_buffer->m_size_vertex;
+	UINT offset = 0;
+	m_device_context->IASetVertexBuffers(0, 1, &vertex_buffer->m_buffer, &stride, &offset);
+	m_device_context->IASetInputLayout(vertex_buffer->m_layout);
+}
+
+void DeviceContext::setTexturedVertexBuffer(TexturedVertexBuffer* vertex_buffer)
 {
 	UINT stride = vertex_buffer->m_size_vertex;
 	UINT offset = 0;
@@ -88,6 +98,18 @@ void DeviceContext::setDepthStencilState()
 {
 	m_device_context->OMSetDepthStencilState(GraphicsEngine::get()->getStencilState(), 0xFF);
 }
+
+
+void DeviceContext::setPixelShaderSamplers(UINT startSlot, UINT nSamplers, ID3D11SamplerState*  samplerState)
+{
+	m_device_context->PSSetSamplers(0, 1, &samplerState);
+}
+
+void DeviceContext::setShaderResources(UINT startSlot, UINT numViews, ID3D11ShaderResourceView* texture)
+{
+	m_device_context->PSSetShaderResources(startSlot, numViews, &texture);
+}
+
 
 ID3D11DeviceContext* DeviceContext::getDeviceContext()
 {

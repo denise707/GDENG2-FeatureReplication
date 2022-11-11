@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include "Vector3D.h"
+#include "Vector2D.h"
+
 #include "Matrix4x4.h"
 #include "ConstantBuffer.h"
 #include "IndexBuffer.h"
@@ -51,6 +53,13 @@ public:
 		Vector3D color;
 		Vector3D color2;
 	};
+
+	struct TexturedVertex
+	{
+		Vector3D position;
+		Vector2D texCoord;
+	};
+
 
 	_declspec(align(16))
 		struct CBData

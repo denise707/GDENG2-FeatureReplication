@@ -21,6 +21,7 @@
 //primitives
 #include "Cube.h"
 #include "Plane.h"
+#include "TexturedQuad.h"
 
 
 
@@ -60,6 +61,8 @@ public:
 	virtual void onRightMouseDown(const Point deltaPos) override;
 	virtual void onRightMouseUp(const Point deltaPos) override;
 
+	bool LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height);
+
 private:
 	SwapChain* m_swap_chain;
 	
@@ -68,11 +71,14 @@ private:
 	vector<AGameObject*> objList;
 	vector<AGameObject*> outlineList;
 
+	TexturedQuad* quad;
+
 	int width = 0;
 	int height = 0;
 
 	void* shader_byte_code = nullptr;
 	size_t size_shader = 0;
+
 public:
 	static vector<bool> selectedObjList;
 };

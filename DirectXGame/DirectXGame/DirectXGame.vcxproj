@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -158,6 +158,8 @@
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="SceneCameraHandler.cpp" />
     <ClCompile Include="SwapChain.cpp" />
+    <ClCompile Include="TexturedQuad.cpp" />
+    <ClCompile Include="TexturedVertexBuffer.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -194,12 +196,18 @@
     <ClInclude Include="SceneCameraHandler.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="SwapChain.h" />
+    <ClInclude Include="TexturedQuad.h" />
+    <ClInclude Include="TexturedVertexBuffer.h" />
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Vector4D.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Logo.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

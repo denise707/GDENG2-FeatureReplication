@@ -156,6 +156,8 @@
     <ClCompile Include="OutlineGizmo.cpp">
       <Filter>GameEngine\Gizmos</Filter>
     </ClCompile>
+    <ClCompile Include="TexturedVertexBuffer.cpp" />
+    <ClCompile Include="TexturedQuad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -266,5 +268,13 @@
     <ClInclude Include="OutlineGizmo.h">
       <Filter>GameEngine\Gizmos</Filter>
     </ClInclude>
+    <ClInclude Include="TexturedVertexBuffer.h" />
+    <ClInclude Include="TexturedQuad.h" />
+    <ClInclude Include="Vector2D.h">
+      <Filter>GameEngine\Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Logo.jpg" />
   </ItemGroup>
 </Project>

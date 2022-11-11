@@ -4,6 +4,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "ConstantBuffer.h"
+#include "TexturedVertexBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -95,6 +96,11 @@ DeviceContext* GraphicsEngine::getImmediateDeviceContext()
 VertexBuffer* GraphicsEngine::createVertexBuffer()
 {
 	return new VertexBuffer();
+}
+
+TexturedVertexBuffer* GraphicsEngine::createTexturedVertexBuffer()
+{
+	return new TexturedVertexBuffer();
 }
 
 IndexBuffer* GraphicsEngine::createIndexBuffer()
