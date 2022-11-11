@@ -1,26 +1,23 @@
 #pragma once
 #include "AGameObject.h"
-#include "ConstantBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexBuffer.h"
+
+#include <vector>
 
 class Cube : public AGameObject
 {
 public:
 	Cube(string name, void* shaderByteCode, size_t sizeShader);
+	Cube(vector<Vertex> v1, vector<Vertex> v2, string name, void* shaderByteCode, size_t sizeShader);
 	~Cube();
 
 	void update(float deltaTime) override;
 	void draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader) override;
 	void setAnimSpeed(float speed);
-
+	vector<Vertex> getVertexList();
 private:
-	VertexBuffer* vertexBuffer;
-	IndexBuffer* indexBuffer;
-	ConstantBuffer* constantBuffer;
-
 	float speed = 4.0f;
 	float deltaTime = 0;
 	Matrix4x4 m_world_matrix;
+	//vector<Vertex> vertex_list_copy;
 };
 
