@@ -11,7 +11,7 @@ public:
 
 public:
 	void update();
-	void draw();
+	void draw(int width, int height);
 	ID3D11ShaderResourceView* myTexture;
 	ID3D11SamplerState* samplerState;
 

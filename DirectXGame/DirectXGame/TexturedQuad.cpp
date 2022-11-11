@@ -2,6 +2,7 @@
 #include <iostream>
 #include "DeviceContext.h"
 #include "GraphicsEngine.h"
+#include "EngineTime.h"
 #include "SceneCameraHandler.h"
 #include <d3d11.h>
 #include "imgui.h"
@@ -42,6 +43,12 @@ TexturedQuad::TexturedQuad(string name, void* shaderByteCode, size_t sizeShader)
 	pixelShader = GraphicsEngine::get()->createPixelShader(shaderByteCode, sizeShader);
 	GraphicsEngine::get()->releaseCompiledShader();
 
+	//Create constant buffer
+	CBData cbData = {};
+	cbData.time = 0;
+	this->constantBuffer = GraphicsEngine::get()->createConstantBuffer();
+	this->constantBuffer->load(&cbData, sizeof(CBData));
+
 	/*int width = 0;
 	int height = 0;
 	bool ret = LoadTextureFromFile("C://Users//Setiel Olivarez/Desktop/School/GDENG2/Project/Game Engine/dlsu.png", &myTexture, &width, &height);
@@ -52,23 +59,69 @@ TexturedQuad::TexturedQuad(string name, void* shaderByteCode, size_t sizeShader)
 TexturedQuad::~TexturedQuad()
 {
 	this->texturedVertexBuffer->release();
-	this->vertexShader->release();
-	this->pixelShader->release();
+	//this->vertexShader->release();
+	//this->pixelShader->release();
+	this->constantBuffer->release();
+
 }
 
 void TexturedQuad::update()
 {
 }
 
-void TexturedQuad::draw()
+void TexturedQuad::draw(int width, int height)
 {
+
+	GraphicsEngine* graphEngine = GraphicsEngine::get();
+	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
+
+	CBData cbData = {};
+
+	//cbData.time = deltaTime;
+
+	//Add object transformation
+	Matrix4x4 temp;
+
+	cbData.worldMatrix.setIdentity();
+
+	Matrix4x4 world_cam;
+	world_cam.setIdentity();
+
+	temp.setIdentity();
+	temp.setScale(getLocalScale());
+	cbData.worldMatrix *= temp;
+
+	temp.setIdentity();
+	temp.setRotationX(getLocalRotation().m_x);
+	cbData.worldMatrix *= temp;
+
+	temp.setIdentity();
+	temp.setRotationY(getLocalRotation().m_y);
+	cbData.worldMatrix *= temp;
+
+	temp.setIdentity();
+	temp.setRotationZ(getLocalRotation().m_z);
+	cbData.worldMatrix *= temp;
+
+	temp.setIdentity();
+	temp.setTranslation(getLocalPosition());
+	cbData.worldMatrix *= temp;
+
+	//Add camera transformation
+	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
+	cbData.viewMatrix = cameraMatrix;
+
+	//Perspective View
+	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+
+	this->constantBuffer->update(deviceContext, &cbData);
+
 	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShaderSamplers(0,1, samplerState);
 	GraphicsEngine::get()->getImmediateDeviceContext()->setShaderResources(0, 1, this->myTexture);
 
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(vertexShader);
 	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
-
 
 	//SET THE VERTICES OF THE TRIANGLE TO DRAW
 	GraphicsEngine::get()->getImmediateDeviceContext()->setTexturedVertexBuffer(texturedVertexBuffer);

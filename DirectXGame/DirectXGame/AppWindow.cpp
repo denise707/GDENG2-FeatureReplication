@@ -131,6 +131,10 @@ void AppWindow::onCreate()
 
 	quad->myTexture = myTexture;
 	quad->samplerState = samplerState;
+	quad->setPosition(0, 0, 0);
+	quad->setScale(5, 5, 5);
+
+	//objList.push_back(quad);
 }
 
 void AppWindow::onUpdate()
@@ -189,7 +193,7 @@ void AppWindow::onUpdate()
 	GraphicsEngine::get()->getImmediateDeviceContext()->setDepthStencilState();
 
 
-	quad->draw();
+	quad->draw(width, height);
 	//Draw Outline Gizmos
 	for (int i = 0; i < outlineList.size(); i++)
 	{
