@@ -46,10 +46,13 @@ AppWindow::~AppWindow()
 void AppWindow::onCreate()
 {
 	Window::onCreate();
-
-	InputSystem::get()->addListener(this);
-	InputSystem::get()->showCursor(false);
+	
 	EngineTime::initialize();
+	
+	InputSystem::initialize();
+	InputSystem::getInstance()->addListener(this);
+	//InputSystem::getInstance()->showCursor(false);
+
 
 	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
@@ -105,7 +108,7 @@ void AppWindow::onUpdate()
 {
 	Window::onUpdate();
 
-	InputSystem::get()->update();
+	InputSystem::getInstance()->update();
 
 	//CLEAR THE RENDER TARGET 
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
@@ -186,12 +189,12 @@ void AppWindow::onDestroy()
 
 void AppWindow::onFocus()
 {
-	InputSystem::get()->addListener(this);
+	InputSystem::getInstance()->addListener(this);
 }
 
 void AppWindow::onKillFocus()
 {
-	InputSystem::get()->removeListener(this);
+	InputSystem::getInstance()->removeListener(this);
 }
 
 void AppWindow::onKeyDown(int key)
@@ -204,31 +207,31 @@ void AppWindow::onKeyUp(int key)
 	
 }
 
-void AppWindow::onMouseMove(const Point& mouse_pos)
+void AppWindow::onMouseMove(const Point deltaPos)
 {
-	int width = (this->getClientWindowRect().right - this->getClientWindowRect().left);
-	int height = (this->getClientWindowRect().bottom - this->getClientWindowRect().top);
+	//int width = (this->getClientWindowRect().right - this->getClientWindowRect().left);
+	//int height = (this->getClientWindowRect().bottom - this->getClientWindowRect().top);
 
-	InputSystem::get()->showCursor(true);
-	//InputSystem::get()->setCursorPosition(Point((int)(width / 2.0f), (int)(height / 2.0f)));
+	//InputSystem::get()->showCursor(true);
+	////InputSystem::get()->setCursorPosition(Point((int)(width / 2.0f), (int)(height / 2.0f)));
 }
 
-void AppWindow::onLeftMouseDown(const Point& mouse_pos)
-{
-	
-}
-
-void AppWindow::onLeftMouseUp(const Point& mouse_pos)
+void AppWindow::onLeftMouseDown(const Point deltaPos)
 {
 	
 }
 
-void AppWindow::onRightMouseDown(const Point& mouse_pos)
+void AppWindow::onLeftMouseUp(const Point deltaPos)
 {
 	
 }
 
-void AppWindow::onRightMouseUp(const Point& mouse_pos)
+void AppWindow::onRightMouseDown(const Point deltaPos)
+{
+	
+}
+
+void AppWindow::onRightMouseUp(const Point deltaPos)
 {
 
 }
