@@ -49,6 +49,16 @@ void GameObjectManager::instantiateMergedActor(int i)
 	objList.push_back(mergedObjList[i]);
 }
 
+void GameObjectManager::enableBox(int index, bool isEnable)
+{
+	objList[index]->enableBoundingBox = isEnable;
+}
+
+void GameObjectManager::changeBoxScale(int i, float x, float y, float z)
+{
+	objList[i]->boundBoxScale = Vector3D(x, y, z);
+}
+
 void GameObjectManager::updateObjects()
 {
 	#pragma region Outline Selected Objects
@@ -76,7 +86,9 @@ void GameObjectManager::updateObjects()
 	//Draw All Objects
 	for (int i = 0; i < objList.size(); i++)
 	{
-		objList[i]->draw(width, height);
+		objList[i]->draw(width, height);	
+		if(objList[i]->enableBoundingBox)
+			objList[i]->drawBox(width, height);
 	}
 
 	//Set Stencil State to Mask
