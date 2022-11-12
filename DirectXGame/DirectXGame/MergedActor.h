@@ -20,14 +20,14 @@ public:
 	void drawGizmo(int width, int height) override;
 	void drawBox(int width, int height) override;
 	void setAnimSpeed(float speed);
-	vector<Vertex> getVertexList();
+	vector<AGameObject*> getObjList();
 private:
 	ConstantBuffer* constantBuffer;
 
 	float speed = 4.0f;
 	float deltaTime = 0;
 	Matrix4x4 m_world_matrix;
-	vector<AGameObject*> objList;
+	
 	unordered_map<AGameObject*, VertexBuffer*> vertexBuffer_table;
 	unordered_map<AGameObject*, IndexBuffer*> indexBuffer_table;
 	unordered_map<AGameObject*, ConstantBuffer*> constantBuffer_table;

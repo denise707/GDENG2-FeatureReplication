@@ -86,7 +86,7 @@ protected:
 	Vector3D localPosition;
 	Vector3D localScale;
 	Vector3D localRotation;
-
+	vector<AGameObject*> objList;
 
 	VertexBuffer* vertexBuffer;
 	VertexBuffer* gizmoVertexBuffer;

@@ -69,13 +69,45 @@ MergedActor::MergedActor(string name, vector<AGameObject*> toCombine) : AGameObj
 
 	setAnimSpeed(4);
 
+
 	for (int i = 0; i < toCombine.size(); i++)
 	{
+			
 		AGameObject* objCopy = new AGameObject("copy"); memcpy(objCopy, toCombine[i], sizeof(AGameObject));
-		objList.push_back(objCopy);
+		if (objCopy->getBoxVertexBuffer() == nullptr)
+		{
+			//std::cout << ((MergedActor*)objCopy)->getObjList().size();
 
+			if (((MergedActor*)objCopy)->getObjList().size() == 0)
+			{
+				std::cout << "a\n";
+				objList.push_back(objCopy);
+			}
+
+			else
+			{
+				std::cout << ((MergedActor*)objCopy)->getObjList().size() << "\n";
+				for (int j = 0; j < ((MergedActor*)objCopy)->getObjList().size(); j++)
+				{
+					std::cout << j << "b\n";
+					AGameObject* childCopy = new AGameObject("copy"); memcpy(childCopy, ((MergedActor*)objCopy)->getObjList()[j], sizeof(AGameObject));
+					childCopy->setPosition(objCopy->getLocalPosition());
+					childCopy->setRotation(objCopy->getLocalRotation());
+					childCopy->setScale(objCopy->getLocalScale());
+
+					objList.push_back(childCopy);
+				}
+			}
+		}
+
+		else 
+			objList.push_back(objCopy);
+		
+		
+		
 	}
-
+	if (!objList.empty())
+	std::cout << objList.size();
 }
 
 MergedActor::~MergedActor()
@@ -273,6 +305,12 @@ void MergedActor::drawBox(int width, int height)
 void MergedActor::setAnimSpeed(float speed)
 {
 	this->speed = speed;
+}
+
+vector<AGameObject*> MergedActor::getObjList()
+{
+	//std::cout << this->objList.size() << "\n";
+	return this->objList;
 }
 
 
