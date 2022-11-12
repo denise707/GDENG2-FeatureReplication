@@ -80,7 +80,7 @@ TexturedQuad::TexturedQuad(string name, string texture) :AGameObject(name)
 	this->constantBuffer->load(&cbData, sizeof(CBData));
 
 
-	// load texture
+	// loading texture from file
 	GraphicsEngine::get()->initializeSamplers();
 
 	int width = 0;
@@ -88,10 +88,8 @@ TexturedQuad::TexturedQuad(string name, string texture) :AGameObject(name)
 	bool ret = LoadTextureFromFile(texture.c_str(), &myTexture, &width, &height);
 	IM_ASSERT(ret);
 
+	//get sampler state in graphics engine
 	this->samplerState = GraphicsEngine::get()->getSamplerState();
-
-
-
 
 	setAnimSpeed(4);
 }
