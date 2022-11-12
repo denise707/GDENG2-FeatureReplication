@@ -8,6 +8,7 @@
 #include "VertexBuffer.h"
 #include"VertexShader.h"
 #include"PixelShader.h"
+#include "TVertexBuffer.h"
 #include "TexturedVertexBuffer.h"
 #include <vector>
 #include <array>

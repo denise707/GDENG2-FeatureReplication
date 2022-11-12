@@ -85,7 +85,7 @@ void AppWindow::onCreate()
 	//m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
 	//GraphicsEngine::get()->releaseCompiledShader();
 
-	quad = new TexturedQuad("quad", shader_byte_code, size_shader);
+	quad = new TexturedQuad("quad");
 
 	// Initialize UIManager
 	UIManager::getInstance()->initialize(Window::getHWND());

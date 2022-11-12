@@ -3,6 +3,7 @@
 
 class SwapChain;
 class TexturedVertexBuffer;
+class TVertexBuffer;
 class VertexBuffer;
 class IndexBuffer;
 class ConstantBuffer;
@@ -17,6 +18,7 @@ public:
 
 	void setVertexBuffer(VertexBuffer* vertex_buffer);
 	void setTexturedVertexBuffer(TexturedVertexBuffer* vertex_buffer);
+	void setTVertexBuffer(TVertexBuffer* vertex_buffer);
 	void setIndexBuffer(IndexBuffer* index_buffer);
 
 	void drawTriangleList(UINT vertex_count, UINT start_vertex_index);
