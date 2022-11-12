@@ -23,7 +23,7 @@ void MenuScreen::drawUI()
     {
         if (ImGui::BeginMenu("Tools"))
         {
-            if (ImGui::MenuItem("Select Objects..")) { HierarchyScreen::isOpen = true; }
+            if (ImGui::MenuItem("Open Editor..")) { HierarchyScreen::isOpen = true; }
             if (ImGui::MenuItem("Create Cube..")) { GameObjectManager::get()->createCube(); }
             if (ImGui::MenuItem("Create Pyramid..")) { GameObjectManager::get()->createPyramid(); }
             if (ImGui::MenuItem("Merge Selected..")) { GameObjectManager::get()->mergeSelected(); }

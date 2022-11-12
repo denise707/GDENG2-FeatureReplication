@@ -20,7 +20,11 @@ void HierarchyScreen::drawUI()
 {
     if (isOpen)
     {
-        static float x, y, z;
+        static float xP, yP, zP;
+        static float xS = 1; 
+        static float yS = 1;
+        static float zS = 1;
+        static bool isEnabled = false;
         
         //Outline Selection
         ImGui::SetNextWindowSize(ImVec2(315, 200));
@@ -46,25 +50,45 @@ void HierarchyScreen::drawUI()
             const char* objLabel = str.data();
             if (ImGui::Button(objLabel)) {
                 index = i;
-                x = GameObjectManager::get()->objList[index]->getLocalPosition().m_x;
-                y = GameObjectManager::get()->objList[index]->getLocalPosition().m_y;
-                z = GameObjectManager::get()->objList[index]->getLocalPosition().m_z;
+                isEnabled = GameObjectManager::get()->objList[index]->enableBoundingBox;
+                xP = GameObjectManager::get()->objList[index]->getLocalPosition().m_x;
+                yP = GameObjectManager::get()->objList[index]->getLocalPosition().m_y;
+                zP = GameObjectManager::get()->objList[index]->getLocalPosition().m_z;
+                xS = GameObjectManager::get()->objList[index]->boundBoxScale.m_x;
+                yS = GameObjectManager::get()->objList[index]->boundBoxScale.m_y;
+                zS = GameObjectManager::get()->objList[index]->boundBoxScale.m_z;
             }
         }
         ImGui::End();
 
         //Inspector
         if (!GameObjectManager::get()->objList.empty()) {
-            ImGui::SetNextWindowSize(ImVec2(130, 200));
+            ImGui::SetNextWindowSize(ImVec2(160, 300));
             ImGui::Begin("Inspector", &isOpen, ImGuiWindowFlags_NoResize);
             ImGui::Spacing();
             ImGui::Spacing();
             ImGui::Spacing();
+
             ImGui::Text("Position: ");
-            ImGui::SliderFloat("X", &x, -10.0f, 10.0f);
-            ImGui::SliderFloat("Y", &y, -10.0f, 10.0f);
-            ImGui::SliderFloat("Z", &z, -10.0f, 10.0f);
-            GameObjectManager::get()->changePosition(index, x, y, z);
+            ImGui::SliderFloat("Pos X", &xP, -10.0f, 10.0f);
+            ImGui::SliderFloat("Pos Y", &yP, -10.0f, 10.0f);
+            ImGui::SliderFloat("Pos Z", &zP, -10.0f, 10.0f);
+            GameObjectManager::get()->changePosition(index, xP, yP, zP);
+
+            ImGui::Spacing();
+            ImGui::Spacing();
+
+            ImGui::Checkbox("Enable Box", &isEnabled);
+            GameObjectManager::get()->enableBox(index, isEnabled);
+
+            ImGui::Spacing();
+            ImGui::Spacing();
+
+            ImGui::Text("Box Scale: ");
+            ImGui::SliderFloat("X", &xS, 1.0f, 10.0f);
+            ImGui::SliderFloat("Y", &yS, 1.0f, 10.0f);
+            ImGui::SliderFloat("Z", &zS, 1.0f, 10.0f);
+            GameObjectManager::get()->changeBoxScale(index, xS, yS, zS);
             ImGui::End();
         }   
 
