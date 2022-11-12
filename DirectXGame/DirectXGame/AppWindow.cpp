@@ -11,6 +11,7 @@
 #include <d3d11.h>
 #include "OutlineGizmo.h"
 #include "UIManager.h"
+#include "GameObjectManager.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -74,26 +75,7 @@ void AppWindow::onCreate()
 	//m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 
 	//Create Object and Gizmo Instances
-	for(int i = 0; i < 3; i++)
-	{
-		//Cube 
-		Cube* cube = new Cube("Cube");
-		this->objList.push_back((cube));
-
-		//Gizmo
-		OutlineGizmo* outline = new OutlineGizmo("OutlineGizmo");
-		this->outlineList.push_back((outline));
-	}
-
-	//Set Object Transform 
-	this->objList[1]->setPosition(1, 0, 0);
-	this->objList[2]->setPosition(0, 0, 1);
-	
-	//Outline Gizmo Transform (Copy Corresponding Object's Transform)
-	for (int i = 0; i < outlineList.size(); i++) {
-		this->outlineList[1]->setPosition(1, 0, 0);
-		this->outlineList[2]->setPosition(0, 0, 1);
-	}
+	GameObjectManager::get()->initialize();
 
 	////Release Compiled Shader
 	//GraphicsEngine::get()->releaseCompiledShader();
@@ -133,8 +115,6 @@ void AppWindow::onCreate()
 	quad->samplerState = samplerState;
 	quad->setPosition(0, 0, 0);
 	quad->setScale(5, 5, 5);
-
-	//objList.push_back(quad);
 }
 
 void AppWindow::onUpdate()
@@ -154,56 +134,11 @@ void AppWindow::onUpdate()
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
 
-
-
 	//UPDATE CAMERA
 	SceneCameraHandler::getInstance()->update(EngineTime::getDeltaTime(), width, height);
 
 	//Outline Selected Objects
-	#pragma region Outline Selected Objects
-
-	//Updated Selected Objects
-	for (int i = 0; i < selectedObjList.size(); i++) {
-		objList[i]->isSelected = selectedObjList[i];
-	}
-
-	//Set Stencil State to Write
-	GraphicsEngine::get()->createStencilState("Write");
-	GraphicsEngine::get()->getImmediateDeviceContext()->setDepthStencilState();
-
-	//Draw Selected Objects
-	for (int i = 0; i < objList.size(); i++)
-	{
-		if (objList[i]->isSelected)
-			objList[i]->draw(width, height);
-	}
-
-	//Set Stencil State to Off
-	GraphicsEngine::get()->createStencilState("Off");
-	GraphicsEngine::get()->getImmediateDeviceContext()->setDepthStencilState();
-
-	//Draw All Objects
-	for (int i = 0; i < objList.size(); i++)
-	{
-		objList[i]->draw(width, height);
-	}
-
-	//Set Stencil State to Mask
-	GraphicsEngine::get()->createStencilState("Mask");
-	GraphicsEngine::get()->getImmediateDeviceContext()->setDepthStencilState();
-
-
-	quad->draw(width, height);
-	//Draw Outline Gizmos
-	for (int i = 0; i < outlineList.size(); i++)
-	{
-		if (objList[i]->isSelected)
-		{
-			outlineList[i]->isSelected = true;
-			objList[i]->drawGizmo(width, height);
-		}
-	}
-	#pragma endregion
+	GameObjectManager::get()->updateObjects();
 
 	//Draw UI
 	UIManager::getInstance()->drawAllUI();

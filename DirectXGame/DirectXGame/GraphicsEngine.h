@@ -39,6 +39,8 @@ public:
 	static GraphicsEngine* get();
 	ID3D11Device* getDevice();
 	ID3D11DepthStencilState* getStencilState();
+	ID3D11RasterizerState* mWireframeRS;
+	ID3D11RasterizerState* mSolidRS;
 private:
 	DeviceContext* m_imm_device_context;
 private:
@@ -56,7 +58,7 @@ private:
 	ID3DBlob* m_psblob = nullptr;
 	ID3D11VertexShader* vertexShader = nullptr;
 	ID3D11PixelShader* pixelShader = nullptr;
-
+	void InitRenderStates();
 
 
 private:

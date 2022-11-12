@@ -55,6 +55,9 @@ bool GraphicsEngine::init()
 	m_dxgi_device->GetParent(__uuidof(IDXGIAdapter), (void**)&m_dxgi_adapter);
 	m_dxgi_adapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgi_factory);
 
+	//For render mode
+	InitRenderStates();
+
 	return true;
 }
 
@@ -213,4 +216,23 @@ GraphicsEngine* GraphicsEngine::get()
 {
 	static GraphicsEngine engine;
 	return &engine;
+}
+
+void GraphicsEngine::InitRenderStates()
+{
+	D3D11_RASTERIZER_DESC wfd;
+	ZeroMemory(&wfd, sizeof(D3D11_RASTERIZER_DESC));
+	wfd.FillMode = D3D11_FILL_WIREFRAME;
+	wfd.CullMode = D3D11_CULL_NONE;
+	wfd.DepthClipEnable = true;
+
+	m_d3d_device->CreateRasterizerState(&wfd, &mWireframeRS);
+
+	D3D11_RASTERIZER_DESC sd;
+	ZeroMemory(&sd, sizeof(D3D11_RASTERIZER_DESC));
+	sd.FillMode = D3D11_FILL_SOLID;
+	sd.CullMode = D3D11_CULL_NONE;
+	sd.DepthClipEnable = true;
+
+	m_d3d_device->CreateRasterizerState(&sd, &mSolidRS);
 }

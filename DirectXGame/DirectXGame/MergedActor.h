@@ -11,7 +11,7 @@ class MergedActor :
 {
 public:
 	MergedActor(string name, void* shaderByteCode, size_t sizeShader, AGameObject* obj1, AGameObject* obj2);
-	MergedActor(string name, void* shaderByteCode, size_t sizeShader, vector<AGameObject*> toCombine);
+	MergedActor(string name, vector<AGameObject*> toCombine);
 
 	~MergedActor();
 

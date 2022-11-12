@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "UIManager.h"
 #include <iostream>
+#include "GameObjectManager.h"
 
 bool HierarchyScreen::isOpen = false;
 
@@ -19,39 +20,66 @@ void HierarchyScreen::drawUI()
 {
     if (isOpen)
     {
-        ImGui::SetNextWindowSize(ImVec2(200, 200));
+        static float x, y, z;
+        
+        //Outline Selection
+        ImGui::SetNextWindowSize(ImVec2(315, 200));
         ImGui::Begin("Hierarchy", &isOpen, ImGuiWindowFlags_NoResize);
         ImGui::Spacing();
         ImGui::Spacing();
         ImGui::Spacing();
 
-        //0
-        if (ImGui::Button("Select 0")) {
-            AppWindow::selectedObjList[0] = true;
+        for (int i = 0; i < GameObjectManager::get()->objList.size(); i++) {
+            string str = "Select " + to_string(i);
+            const char* selectLabel = str.data();
+            if (ImGui::Button(selectLabel)) {
+                GameObjectManager::get()->selectedObjList[i] = true;
+            }
+            ImGui::SameLine();
+            str = "Unselect " + to_string(i);
+            const char* unselectLabel = str.data();
+            if (ImGui::Button(unselectLabel)) {
+                GameObjectManager::get()->selectedObjList[i] = false;
+            }          
+            ImGui::SameLine();
+            str = "Object " + to_string(i) + " Properties";
+            const char* objLabel = str.data();
+            if (ImGui::Button(objLabel)) {
+                index = i;
+                x = GameObjectManager::get()->objList[index]->getLocalPosition().m_x;
+                y = GameObjectManager::get()->objList[index]->getLocalPosition().m_y;
+                z = GameObjectManager::get()->objList[index]->getLocalPosition().m_z;
+            }
         }
-        ImGui::SameLine();
-        if (ImGui::Button("Unselect 0")) {
-            AppWindow::selectedObjList[0] = false;
-        }
-
-        //1
-        if (ImGui::Button("Select 1")) {
-            AppWindow::selectedObjList[1] = true;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Unselect 1")) {
-            AppWindow::selectedObjList[1] = false;
-        }
-
-        //2
-        if (ImGui::Button("Select 2")) {
-            AppWindow::selectedObjList[2] = true;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Unselect 2")) {
-            AppWindow::selectedObjList[2] = false;
-        }
-
         ImGui::End();
+
+        //Inspector
+        if (!GameObjectManager::get()->objList.empty()) {
+            ImGui::SetNextWindowSize(ImVec2(130, 200));
+            ImGui::Begin("Inspector", &isOpen, ImGuiWindowFlags_NoResize);
+            ImGui::Spacing();
+            ImGui::Spacing();
+            ImGui::Spacing();
+            ImGui::Text("Position: ");
+            ImGui::SliderFloat("X", &x, -10.0f, 10.0f);
+            ImGui::SliderFloat("Y", &y, -10.0f, 10.0f);
+            ImGui::SliderFloat("Z", &z, -10.0f, 10.0f);
+            GameObjectManager::get()->changePosition(index, x, y, z);
+            ImGui::End();
+        }   
+
+        //Saved Merge Actors
+        if (!GameObjectManager::get()->mergedObjList.empty()) {
+            ImGui::SetNextWindowSize(ImVec2(170, 200));
+            ImGui::Begin("Merged Actors", &isOpen, ImGuiWindowFlags_NoResize);
+            for (int i = 0; i < GameObjectManager::get()->mergedObjList.size(); i++) {
+                String str = "Create Merged Actor " + to_string(i);
+                const char* mALabel = str.data();
+                if (ImGui::Button(mALabel)) {
+                    GameObjectManager::get()->instantiateMergedActor(i);
+                }
+            }
+            ImGui::End();
+        }
     }
 }

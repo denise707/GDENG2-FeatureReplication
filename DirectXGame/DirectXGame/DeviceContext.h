@@ -33,6 +33,9 @@ public:
 
 	void setDepthStencilState();
 
+	void setWireframeRenderMode();
+	void setSolidRenderMode();
+
 	//void setPixelShaderSamplers(UINT startSlot, UINT nSamplers, ID3D11SamplerState* const* samplerState);
 
 

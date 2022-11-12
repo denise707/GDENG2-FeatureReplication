@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "UIManager.h"
 #include "HierarchyScreen.h"
+#include "GameObjectManager.h"
 
 MenuScreen::MenuScreen() : AUIScreen("MenuScreen")
 {
@@ -22,7 +23,9 @@ void MenuScreen::drawUI()
     {
         if (ImGui::BeginMenu("Tools"))
         {
-            if (ImGui::MenuItem("Outline Selected..")) { HierarchyScreen::isOpen = true; }
+            if (ImGui::MenuItem("Select Objects..")) { HierarchyScreen::isOpen = true; }
+            if (ImGui::MenuItem("Create Cube..")) { GameObjectManager::get()->createCube(); }
+            if (ImGui::MenuItem("Merge Selected..")) { GameObjectManager::get()->mergeSelected(); }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();

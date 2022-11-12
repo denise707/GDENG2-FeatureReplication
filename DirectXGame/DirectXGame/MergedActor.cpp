@@ -59,7 +59,7 @@ MergedActor::MergedActor(string name, void* shaderByteCode, size_t sizeShader, A
 
 }
 
-MergedActor::MergedActor(string name, void* shaderByteCode, size_t sizeShader, vector<AGameObject*> toCombine) : AGameObject(name)
+MergedActor::MergedActor(string name, vector<AGameObject*> toCombine) : AGameObject(name)
 {
 	//Create constant buffer
 	CBData cbData = {};

@@ -110,6 +110,16 @@ void DeviceContext::setShaderResources(UINT startSlot, UINT numViews, ID3D11Shad
 	m_device_context->PSSetShaderResources(startSlot, numViews, &texture);
 }
 
+void DeviceContext::setWireframeRenderMode()
+{
+	m_device_context->RSSetState(GraphicsEngine::get()->mWireframeRS);
+}
+
+void DeviceContext::setSolidRenderMode()
+{
+	m_device_context->RSSetState(GraphicsEngine::get()->mSolidRS);
+}
+
 
 ID3D11DeviceContext* DeviceContext::getDeviceContext()
 {

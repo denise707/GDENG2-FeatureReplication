@@ -38,6 +38,7 @@ Cube::Cube(string name) :AGameObject(name)
 		{ Vector3D(-0.5f,0.5f,0.5f),     Vector3D(1,0,0),  Vector3D(0,0.2f,0.2f) },
 		{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(1,0,0), Vector3D(0,0.2f,0) }
 	};
+
 	unsigned int index_list[] =
 	{
 		//FRONT SIDE
