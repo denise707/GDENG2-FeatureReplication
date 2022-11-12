@@ -20,6 +20,7 @@ public:
 	void updateObjects();
 	void initialize();
 	void createCube();
+	void createPyramid();
 	void changePosition(int i, float x, float y, float z);
 	void mergeSelected();
 	void instantiateMergedActor(int i);

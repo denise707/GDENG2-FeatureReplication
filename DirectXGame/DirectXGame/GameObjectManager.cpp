@@ -1,6 +1,7 @@
 #include "GameObjectManager.h"
 #include "GraphicsEngine.h"
 #include "UIManager.h"
+#include "Pyramid.h"
 #include "OutlineGizmo.h"
 #include "MergedActor.h"
 #include <iostream>
@@ -26,10 +27,17 @@ void GameObjectManager::createCube()
 	selectedObjList.push_back(cube->isSelected);
 }
 
+void GameObjectManager::createPyramid()
+{
+	Pyramid* pyramid = new Pyramid("Pyramid");
+	objList.push_back((pyramid));
+	selectedObjList.push_back(pyramid->isSelected);
+}
 void GameObjectManager::changePosition(int i, float x, float y, float z)
 {
 	objList[i]->setPosition(x, y, z);
 }
+
 
 void GameObjectManager::mergeSelected()
 {
@@ -46,7 +54,9 @@ void GameObjectManager::mergeSelected()
 void GameObjectManager::instantiateMergedActor(int i)
 {
 	selectedObjList.push_back(false);
-	objList.push_back(mergedObjList[i]);
+	vector<AGameObject*> temp;
+	MergedActor* m = new MergedActor("Merged", temp); memcpy(m, mergedObjList[i], sizeof(MergedActor));
+	objList.push_back(m);
 }
 
 void GameObjectManager::updateObjects()
