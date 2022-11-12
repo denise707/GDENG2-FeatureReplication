@@ -142,6 +142,8 @@ void MergedActor::draw(int width, int height)
 		deviceContext->setIndexBuffer(objList[i]->getIndexBuffer());
 		deviceContext->setVertexBuffer(objList[i]->getVertexBuffer());
 
+		GraphicsEngine::get()->getImmediateDeviceContext()->setSolidRenderMode();
+
 		deviceContext->drawIndexedTriangleList(objList[i]->getIndexBuffer()->getSizeIndexList(), 0, 0);
 	}
 
@@ -201,10 +203,71 @@ void MergedActor::drawGizmo(int width, int height)
 		deviceContext->setIndexBuffer(objList[i]->getIndexBuffer());
 		deviceContext->setVertexBuffer(objList[i]->getGizmoVertexBuffer());
 
+		GraphicsEngine::get()->getImmediateDeviceContext()->setSolidRenderMode();
+
 		deviceContext->drawIndexedTriangleList(objList[i]->getIndexBuffer()->getSizeIndexList(), 0, 0);
-		std::cout << "11\n";
 	}
 
+}
+
+void MergedActor::drawBox(int width, int height)
+{
+	GraphicsEngine* graphEngine = GraphicsEngine::get();
+	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
+
+	for (int i = 0; i < objList.size(); i++)
+	{
+		CBData cbData = {};
+
+		cbData.time = deltaTime;
+
+		//Add object transformation
+		Matrix4x4 temp;
+
+		cbData.worldMatrix.setIdentity();
+
+		Matrix4x4 world_cam;
+		world_cam.setIdentity();
+
+		temp.setIdentity();
+		temp.setScale(boundBoxScale);
+		cbData.worldMatrix *= temp;
+
+		temp.setIdentity();
+		temp.setRotationX(getLocalRotation().m_x + objList[i]->getLocalRotation().m_x);
+		cbData.worldMatrix *= temp;
+
+		temp.setIdentity();
+		temp.setRotationY(getLocalRotation().m_y + objList[i]->getLocalRotation().m_y);
+		cbData.worldMatrix *= temp;
+
+		temp.setIdentity();
+		temp.setRotationZ(getLocalRotation().m_z + objList[i]->getLocalRotation().m_z);
+		cbData.worldMatrix *= temp;
+
+		temp.setIdentity();
+		temp.setTranslation(getLocalPosition() + objList[i]->getLocalPosition());
+		cbData.worldMatrix *= temp;
+
+		localMatrix = cbData.worldMatrix;
+		//Add camera transformation
+		Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
+		cbData.viewMatrix = cameraMatrix;
+
+		//Perspective View
+		cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+
+		this->constantBuffer->update(deviceContext, &cbData);
+		deviceContext->setConstantBuffer(objList[i]->getVertexShader(), this->constantBuffer);
+		deviceContext->setConstantBuffer(objList[i]->getPixelShader(), this->constantBuffer);
+
+		deviceContext->setIndexBuffer(objList[i]->getIndexBuffer());
+		deviceContext->setVertexBuffer(objList[i]->getBoxVertexBuffer());
+
+		GraphicsEngine::get()->getImmediateDeviceContext()->setWireframeRenderMode();
+
+		deviceContext->drawIndexedTriangleList(objList[i]->getIndexBuffer()->getSizeIndexList(), 0, 0);
+	}
 }
 
 void MergedActor::setAnimSpeed(float speed)

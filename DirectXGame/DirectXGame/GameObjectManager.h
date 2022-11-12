@@ -23,5 +23,7 @@ public:
 	void changePosition(int i, float x, float y, float z);
 	void mergeSelected();
 	void instantiateMergedActor(int i);
+	void enableBox(int index, bool isEnable);
+	void changeBoxScale(int i, float x, float y, float z);
 };
 

@@ -18,6 +18,7 @@ public:
 	void update(float deltaTime) override;
 	void draw(int width, int height) override;
 	void drawGizmo(int width, int height) override;
+	void drawBox(int width, int height) override;
 	void setAnimSpeed(float speed);
 	vector<Vertex> getVertexList();
 private:

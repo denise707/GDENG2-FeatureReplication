@@ -228,11 +228,7 @@ void GraphicsEngine::InitRenderStates()
 
 	m_d3d_device->CreateRasterizerState(&wfd, &mWireframeRS);
 
-	D3D11_RASTERIZER_DESC sd;
-	ZeroMemory(&sd, sizeof(D3D11_RASTERIZER_DESC));
-	sd.FillMode = D3D11_FILL_SOLID;
-	sd.CullMode = D3D11_CULL_NONE;
-	sd.DepthClipEnable = true;
+	D3D11_RASTERIZER_DESC sd = CD3D11_RASTERIZER_DESC{ CD3D11_DEFAULT{} };
 
 	m_d3d_device->CreateRasterizerState(&sd, &mSolidRS);
 }

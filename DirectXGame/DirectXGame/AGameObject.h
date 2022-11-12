@@ -25,7 +25,7 @@ public:
 	virtual void update(float deltaTime);
 	virtual void draw(int width, int height);
 	virtual void drawGizmo(int width, int height);
-
+	virtual void drawBox(int width, int height);
 
 	void setPosition(float x, float y, float z);
 	void setPosition(Vector3D pos);
@@ -41,12 +41,16 @@ public:
 
 	VertexBuffer* getVertexBuffer();
 	VertexBuffer* getGizmoVertexBuffer();
+	VertexBuffer* getBoxVertexBuffer();
 
 	IndexBuffer* getIndexBuffer();
 	ConstantBuffer* getConstantBuffer();
 
 	VertexShader* getVertexShader();
 	PixelShader* getPixelShader();
+
+	bool enableBoundingBox = false;
+	Vector3D boundBoxScale = Vector3D(1.1, 1.1, 1.1);
 
 	void reset();
 	bool isSelected = false;
@@ -84,6 +88,7 @@ protected:
 
 	VertexBuffer* vertexBuffer;
 	VertexBuffer* gizmoVertexBuffer;
+	VertexBuffer* boxVertexBuffer;
 
 	IndexBuffer* indexBuffer;
 	ConstantBuffer* constantBuffer;
