@@ -169,7 +169,7 @@ void Camera::updateViewMatrix()
 	// y position
 	new_pos = new_pos + world_cam.getYDirection() * (m_upward * 0.1f);
 
-
+	this->setPosition(new_pos);
 	world_cam.setTranslation(new_pos);
 
 	m_world_cam = world_cam;

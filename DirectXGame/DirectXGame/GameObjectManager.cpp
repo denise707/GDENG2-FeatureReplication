@@ -73,7 +73,7 @@ void GameObjectManager::changeBoxScale(int i, float x, float y, float z)
 
 void GameObjectManager::initalizePlayerStart()
 {
-	TexturedQuad* playerStart = new TexturedQuad("PlayerStart", "Logo.jpg");
+	TexturedQuad* playerStart = new TexturedQuad("PlayerStart", "start.jpg");
 	objList.push_back((playerStart));
 	selectedObjList.push_back(playerStart->isSelected);
 }

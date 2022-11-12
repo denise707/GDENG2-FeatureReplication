@@ -23,6 +23,7 @@ public:
 	//Release all the resources loaded
 	bool release();
 	~GraphicsEngine();
+
 public:
 	SwapChain* createSwapChain();
 	DeviceContext* getImmediateDeviceContext();

@@ -116,7 +116,7 @@ void TexturedQuad::update(float delta_time)
 
 void TexturedQuad::draw(int width, int height)
 {
-	//setLookAt(SceneCameraHandler::getInstance()->getSceneCamera()->getLocalPosition());
+	setLookAt(SceneCameraHandler::getInstance()->getSceneCamera()->getLocalPosition());
 
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
@@ -252,24 +252,30 @@ void TexturedQuad::setLookAt(Vector3D lookAtPos)
 	if (lookAtPos.m_x == pos.m_x && lookAtPos.m_y == pos.m_y && lookAtPos.m_z == pos.m_z)
 		return;
 
-	lookAtPos.m_x = pos.m_x - lookAtPos.m_x;
-	lookAtPos.m_y = pos.m_y - lookAtPos.m_y;
-	lookAtPos.m_z = pos.m_z - lookAtPos.m_z;
+	// current pos - camera pos
+	lookAtPos.m_x = -pos.m_x + lookAtPos.m_x;
+	lookAtPos.m_y = -pos.m_y + lookAtPos.m_y;
+	lookAtPos.m_z = -pos.m_z + lookAtPos.m_z;
 
-	float pitch = 0.0f;
+	float pitch = 0.0f; // x rotation
 	if (lookAtPos.m_y != 0.0f)
 	{
 		const float distance = sqrt((lookAtPos.m_x * lookAtPos.m_x) + (lookAtPos.m_z * lookAtPos.m_z));
 		pitch = atan(lookAtPos.m_y / distance);
+	//	cout << "pitch: " << pitch<<"\n";
+
 	}
 
-	float yaw = 0.0f;
+	float yaw = 0.0f; // y rotation
+
 	if (lookAtPos.m_x != 0.0f)
 	{
 		yaw = atan(lookAtPos.m_x / lookAtPos.m_z);
+	//	cout << "yaw: " << yaw << "\n";
 	}
+
 	if (lookAtPos.m_z > 0)
-		yaw += 3.14159;
+		yaw += 3.14;
 
 	this->setRotation(pitch, yaw, 0.0f);
 
