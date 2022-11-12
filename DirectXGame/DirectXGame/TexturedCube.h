@@ -3,12 +3,12 @@
 
 #include <vector>
 
-class TexturedQuad : public AGameObject
+class TexturedCube : public AGameObject
 {
 public:
-	TexturedQuad(string name);
+	TexturedCube(string name);
 	//Cube(vector<Vertex> v1, vector<Vertex> v2, string name, void* shaderByteCode, size_t sizeShader);
-	~TexturedQuad();
+	~TexturedCube();
 
 	void update(float deltaTime) override;
 	void draw(int width, int height) override;

@@ -2,6 +2,8 @@
 #include "SwapChain.h"
 #include "DeviceContext.h"
 #include "VertexBuffer.h"
+#include "TVertexBuffer.h"
+
 #include "IndexBuffer.h"
 #include "ConstantBuffer.h"
 #include "TexturedVertexBuffer.h"
@@ -100,6 +102,12 @@ VertexBuffer* GraphicsEngine::createVertexBuffer()
 {
 	return new VertexBuffer();
 }
+
+TVertexBuffer* GraphicsEngine::createTVertexBuffer()
+{
+	return new TVertexBuffer();
+}
+
 
 TexturedVertexBuffer* GraphicsEngine::createTexturedVertexBuffer()
 {
@@ -200,6 +208,22 @@ void GraphicsEngine::createStencilState(String mode)
 
 	m_d3d_device->CreateDepthStencilState(&desc, &m_stencil_state);
 }
+
+void GraphicsEngine::initializeSamplers(ID3D11SamplerState* samplerSate)
+{
+	D3D11_SAMPLER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	desc.MinLOD = 0;
+	desc.MaxLOD = D3D11_FLOAT32_MAX;
+	this->getDevice()->CreateSamplerState(&desc, &samplerSate);
+}
+
+
 
 ID3D11Device* GraphicsEngine::getDevice()
 {

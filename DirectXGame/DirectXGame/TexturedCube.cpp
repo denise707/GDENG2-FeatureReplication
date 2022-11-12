@@ -1,4 +1,4 @@
-#include "TexturedQuad.h"
+#include "TexturedCube.h"
 #include <iostream>
 #include "DeviceContext.h"
 #include "EngineTime.h"
@@ -6,7 +6,7 @@
 #include "SceneCameraHandler.h"
 
 //Utils* utils = new Utils();
-TexturedQuad::TexturedQuad(string name) :AGameObject(name)
+TexturedCube::TexturedCube(string name) :AGameObject(name)
 {
 	Vector3D position_list[] =
 	{
@@ -14,7 +14,30 @@ TexturedQuad::TexturedQuad(string name) :AGameObject(name)
 		{ Vector3D(-0.5f,0.5f,-0.5f) },
 		{ Vector3D(0.5f,0.5f,-0.5f) },
 		{ Vector3D(0.5f,-0.5f,-0.5f)},
+
+		//BACK FACE
+		{ Vector3D(0.5f,-0.5f,0.5f) },
+		{ Vector3D(0.5f,0.5f,0.5f) },
+		{ Vector3D(-0.5f,0.5f,0.5f)},
+		{ Vector3D(-0.5f,-0.5f,0.5f) }
 	};
+
+
+	Vertex vertex_list_gizmo[] =
+	{
+		//FRONT FACE
+		{Vector3D(-0.5f,-0.5f,-0.5f),	Vector3D(1,0,0), Vector3D(0.2f,0,0) },
+		{Vector3D(-0.5f,0.5f,-0.5f),    Vector3D(1,0,0), Vector3D(0.2f,0.2f,0) },
+		{ Vector3D(0.5f,0.5f,-0.5f),     Vector3D(1,0,0),  Vector3D(0.2f,0.2f,0) },
+		{ Vector3D(0.5f,-0.5f,-0.5f),     Vector3D(1,0,0), Vector3D(0.2f,0,0) },
+
+		//BACK FACE
+		{Vector3D(0.5f,-0.5f,0.5f),	Vector3D(1,0,0), Vector3D(0,0.2f,0) },
+		{Vector3D(0.5f,0.5f,0.5f),    Vector3D(1,0,0), Vector3D(0,0.2f,0.2f) },
+		{ Vector3D(-0.5f,0.5f,0.5f),     Vector3D(1,0,0),  Vector3D(0,0.2f,0.2f) },
+		{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(1,0,0), Vector3D(0,0.2f,0) }
+	};
+
 
 	Vector2D texcoord_list[] =
 	{
@@ -32,7 +55,37 @@ TexturedQuad::TexturedQuad(string name) :AGameObject(name)
 		{ position_list[1],texcoord_list[0] },
 		{ position_list[2],texcoord_list[2] },
 		{ position_list[3],texcoord_list[3] },
+
+		{ position_list[4],texcoord_list[1] },
+		{ position_list[5],texcoord_list[0] },
+		{ position_list[6],texcoord_list[2] },
+		{ position_list[7],texcoord_list[3] },
+
+		{ position_list[1],texcoord_list[1] },
+		{ position_list[6],texcoord_list[0] },
+		{ position_list[5],texcoord_list[2] },
+		{ position_list[2],texcoord_list[3] },
+
+		{ position_list[7],texcoord_list[1] },
+		{ position_list[0],texcoord_list[0] },
+		{ position_list[3],texcoord_list[2] },
+		{ position_list[4],texcoord_list[3] },
+
+		{ position_list[3],texcoord_list[1] },
+		{ position_list[2],texcoord_list[0] },
+		{ position_list[5],texcoord_list[2] },
+		{ position_list[4],texcoord_list[3] },
+
+		{ position_list[7],texcoord_list[1] },
+		{ position_list[6],texcoord_list[0] },
+		{ position_list[1],texcoord_list[2] },
+		{ position_list[0],texcoord_list[3] }
+
+
 	};
+
+
+	//UINT size_list = ARRAYSIZE(vertex_list);
 
 
 	unsigned int index_list[] =
@@ -40,6 +93,21 @@ TexturedQuad::TexturedQuad(string name) :AGameObject(name)
 		//FRONT SIDE
 		0,1,2,  //FIRST TRIANGLE
 		2,3,0,  //SECOND TRIANGLE
+		//BACK SIDE
+		4,5,6,
+		6,7,4,
+		//TOP SIDE
+		8,9,10,
+		10,11,8,
+		//BOTTOM SIDE
+		12,13,14,
+		14,15,12,
+		//RIGHT SIDE
+		16,17,18,
+		18,19,16,
+		//LEFT SIDE
+		20,21,22,
+		22,23,20
 	};
 
 
@@ -48,15 +116,15 @@ TexturedQuad::TexturedQuad(string name) :AGameObject(name)
 	this->indexBuffer->load(index_list, ARRAYSIZE(index_list));
 
 	//Vertex Shader
-	GraphicsEngine::get()->compileVertexShader(L"TexturedVertexShader.hlsl", "tvsmain", &shaderByteCode, &sizeShader);
+	GraphicsEngine::get()->compileVertexShader(L"TVertexShader.hlsl", "tvsmain", &shaderByteCode, &sizeShader);
 	vertexShader = GraphicsEngine::get()->createVertexShader(shaderByteCode, sizeShader);
 
 	//Vertex Buffer
 	this->tVertexBuffer = GraphicsEngine::get()->createTVertexBuffer();
 	this->tVertexBuffer->load(vertex_list, sizeof(TexturedVertex), ARRAYSIZE(vertex_list), shaderByteCode, sizeShader);
 
-	//this->gizmoVertexBuffer = GraphicsEngine::get()->createVertexBuffer();
-	//this->gizmoVertexBuffer->load(vertex_list_gizmo, sizeof(Vertex), ARRAYSIZE(vertex_list_gizmo), shaderByteCode, sizeShader);
+	this->gizmoVertexBuffer = GraphicsEngine::get()->createVertexBuffer();
+	this->gizmoVertexBuffer->load(vertex_list_gizmo, sizeof(Vertex), ARRAYSIZE(vertex_list_gizmo), shaderByteCode, sizeShader);
 
 	GraphicsEngine::get()->releaseCompiledShader();
 
@@ -74,7 +142,7 @@ TexturedQuad::TexturedQuad(string name) :AGameObject(name)
 	setAnimSpeed(4);
 }
 
-TexturedQuad::~TexturedQuad()
+TexturedCube::~TexturedCube()
 {
 	this->indexBuffer->release();
 	this->vertexShader->release();
@@ -82,12 +150,12 @@ TexturedQuad::~TexturedQuad()
 	this->constantBuffer->release();
 }
 
-void TexturedQuad::update(float delta_time)
+void TexturedCube::update(float delta_time)
 {
 
 }
 
-void TexturedQuad::draw(int width, int height)
+void TexturedCube::draw(int width, int height)
 {
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
@@ -109,7 +177,7 @@ void TexturedQuad::draw(int width, int height)
 	cbData.worldMatrix *= temp;
 
 	temp.setIdentity();
-	temp.setRotationX((getLocalRotation().m_x));
+	temp.setRotationX(getLocalRotation().m_x);
 	cbData.worldMatrix *= temp;
 
 	temp.setIdentity();
@@ -152,7 +220,7 @@ void TexturedQuad::draw(int width, int height)
 	deviceContext->drawIndexedTriangleList(this->indexBuffer->getSizeIndexList(), 0, 0);
 }
 
-void TexturedQuad::drawGizmo(int width, int height)
+void TexturedCube::drawGizmo(int width, int height)
 {
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
@@ -211,7 +279,7 @@ void TexturedQuad::drawGizmo(int width, int height)
 	deviceContext->drawIndexedTriangleList(this->indexBuffer->getSizeIndexList(), 0, 0);
 }
 
-void TexturedQuad::setAnimSpeed(float speed)
+void TexturedCube::setAnimSpeed(float speed)
 {
 	this->speed = speed;
 }
