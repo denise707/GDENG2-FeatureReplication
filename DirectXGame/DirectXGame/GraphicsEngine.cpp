@@ -150,6 +150,11 @@ PixelShader* GraphicsEngine::createPixelShader(const void* shader_byte_code, siz
 	return ps;
 }
 
+ID3D11SamplerState* GraphicsEngine::getSamplerState()
+{
+	return samplerState;
+}
+
 bool GraphicsEngine::compileVertexShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size)
 {
 	ID3DBlob* error_blob = nullptr;
@@ -209,7 +214,7 @@ void GraphicsEngine::createStencilState(String mode)
 	m_d3d_device->CreateDepthStencilState(&desc, &m_stencil_state);
 }
 
-void GraphicsEngine::initializeSamplers(ID3D11SamplerState* samplerSate)
+void GraphicsEngine::initializeSamplers()
 {
 	D3D11_SAMPLER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -220,7 +225,7 @@ void GraphicsEngine::initializeSamplers(ID3D11SamplerState* samplerSate)
 	desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 	desc.MinLOD = 0;
 	desc.MaxLOD = D3D11_FLOAT32_MAX;
-	this->getDevice()->CreateSamplerState(&desc, &samplerSate);
+	this->getDevice()->CreateSamplerState(&desc, &samplerState);
 }
 
 

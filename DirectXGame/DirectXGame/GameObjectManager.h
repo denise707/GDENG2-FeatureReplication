@@ -26,5 +26,7 @@ public:
 	void instantiateMergedActor(int i);
 	void enableBox(int index, bool isEnable);
 	void changeBoxScale(int i, float x, float y, float z);
+private:
+	void initalizePlayerStart();
 };
 

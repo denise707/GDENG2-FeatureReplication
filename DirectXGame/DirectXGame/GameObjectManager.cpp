@@ -18,6 +18,8 @@ void GameObjectManager::initialize()
 {
 	width = UIManager::WINDOW_WIDTH;
 	height = UIManager::WINDOW_HEIGHT;
+
+	initalizePlayerStart();
 }
 
 void GameObjectManager::createCube()
@@ -67,6 +69,13 @@ void GameObjectManager::enableBox(int index, bool isEnable)
 void GameObjectManager::changeBoxScale(int i, float x, float y, float z)
 {
 	objList[i]->boundBoxScale = Vector3D(x, y, z);
+}
+
+void GameObjectManager::initalizePlayerStart()
+{
+	TexturedQuad* playerStart = new TexturedQuad("PlayerStart", "Logo.jpg");
+	objList.push_back((playerStart));
+	selectedObjList.push_back(playerStart->isSelected);
 }
 
 void GameObjectManager::updateObjects()

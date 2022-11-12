@@ -5,8 +5,17 @@
 #include "GraphicsEngine.h"
 #include "SceneCameraHandler.h"
 
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
+#include <d3d11.h>
+
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 //Utils* utils = new Utils();
-TexturedQuad::TexturedQuad(string name) :AGameObject(name)
+TexturedQuad::TexturedQuad(string name, string texture) :AGameObject(name)
 {
 	Vector3D position_list[] =
 	{
@@ -71,6 +80,24 @@ TexturedQuad::TexturedQuad(string name) :AGameObject(name)
 	this->constantBuffer = GraphicsEngine::get()->createConstantBuffer();
 	this->constantBuffer->load(&cbData, sizeof(CBData));
 
+
+	//Set Texture
+	// load texture
+	GraphicsEngine::get()->initializeSamplers();
+
+	ID3D11ShaderResourceView* myTex;
+
+	int width = 0;
+	int height = 0;
+	bool ret = LoadTextureFromFile(texture.c_str(), &myTex, &width, &height);
+	IM_ASSERT(ret);
+
+	this->myTexture = myTex;
+	this->samplerState = GraphicsEngine::get()->getSamplerState();
+
+
+
+
 	setAnimSpeed(4);
 }
 
@@ -84,11 +111,13 @@ TexturedQuad::~TexturedQuad()
 
 void TexturedQuad::update(float delta_time)
 {
-
+	
 }
 
 void TexturedQuad::draw(int width, int height)
 {
+	//setLookAt(SceneCameraHandler::getInstance()->getSceneCamera()->getLocalPosition());
+
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
 
@@ -214,6 +243,84 @@ void TexturedQuad::drawGizmo(int width, int height)
 void TexturedQuad::setAnimSpeed(float speed)
 {
 	this->speed = speed;
+}
+
+void TexturedQuad::setLookAt(Vector3D lookAtPos)
+{
+	Vector3D pos = this->getLocalPosition();
+	//Verify that look at pos is not the same as cam pos. They cannot be the same as that wouldn't make sense and would result in undefined behavior.
+	if (lookAtPos.m_x == pos.m_x && lookAtPos.m_y == pos.m_y && lookAtPos.m_z == pos.m_z)
+		return;
+
+	lookAtPos.m_x = pos.m_x - lookAtPos.m_x;
+	lookAtPos.m_y = pos.m_y - lookAtPos.m_y;
+	lookAtPos.m_z = pos.m_z - lookAtPos.m_z;
+
+	float pitch = 0.0f;
+	if (lookAtPos.m_y != 0.0f)
+	{
+		const float distance = sqrt((lookAtPos.m_x * lookAtPos.m_x) + (lookAtPos.m_z * lookAtPos.m_z));
+		pitch = atan(lookAtPos.m_y / distance);
+	}
+
+	float yaw = 0.0f;
+	if (lookAtPos.m_x != 0.0f)
+	{
+		yaw = atan(lookAtPos.m_x / lookAtPos.m_z);
+	}
+	if (lookAtPos.m_z > 0)
+		yaw += 3.14159;
+
+	this->setRotation(pitch, yaw, 0.0f);
+
+}
+
+// Simple helper function to load an image into a DX11 texture with common settings
+bool TexturedQuad:: LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height)
+{
+	ID3D11Device* g_pd3dDevice = GraphicsEngine::get()->getDevice();
+	// Load from disk into a raw RGBA buffer
+	int image_width = 0;
+	int image_height = 0;
+	unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
+	if (image_data == NULL)
+		return false;
+
+	// Create texture
+	D3D11_TEXTURE2D_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Width = image_width;
+	desc.Height = image_height;
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	desc.SampleDesc.Count = 1;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	desc.CPUAccessFlags = 0;
+
+	ID3D11Texture2D* pTexture = NULL;
+	D3D11_SUBRESOURCE_DATA subResource;
+	subResource.pSysMem = image_data;
+	subResource.SysMemPitch = desc.Width * 4;
+	subResource.SysMemSlicePitch = 0;
+	g_pd3dDevice->CreateTexture2D(&desc, &subResource, &pTexture);
+
+	// Create texture view
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	ZeroMemory(&srvDesc, sizeof(srvDesc));
+	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = desc.MipLevels;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	g_pd3dDevice->CreateShaderResourceView(pTexture, &srvDesc, out_srv);
+	pTexture->Release();
+
+	*out_width = image_width;
+	*out_height = image_height;
+	stbi_image_free(image_data);
+
+	return true;
 }
 
 

@@ -34,12 +34,15 @@ public:
 	VertexShader* createVertexShader(const void* shader_byte_code, size_t byte_code_size);
 	PixelShader* createPixelShader(const void* shader_byte_code, size_t byte_code_size);
 
+	ID3D11ShaderResourceView* getTexture();
+	ID3D11SamplerState* getSamplerState();
+
+
 public:
 	bool compileVertexShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size);
 	bool compilePixelShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size);
 	void releaseCompiledShader();
 	void createStencilState(String mode);
-	void initializeSamplers(ID3D11SamplerState* samplerSate);
 	void initializeSamplers();
 
 public:
@@ -66,6 +69,8 @@ private:
 	ID3D11VertexShader* vertexShader = nullptr;
 	ID3D11PixelShader* pixelShader = nullptr;
 	void InitRenderStates();
+
+	ID3D11SamplerState* samplerState;
 
 
 private:

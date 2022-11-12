@@ -12,6 +12,8 @@ public:
 	void update(float deltaTime, int width, int height);
 
 	Matrix4x4 getSceneCameraViewMatrix();
+	Camera* getSceneCamera();
+
 
 private:
 	SceneCameraHandler();
