@@ -158,6 +158,11 @@
     </ClCompile>
     <ClCompile Include="TexturedVertexBuffer.cpp" />
     <ClCompile Include="TexturedQuad.cpp" />
+    <ClCompile Include="TexturedCube.cpp" />
+    <ClCompile Include="TVertexBuffer.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="MergedActor.cpp" />
+    <ClCompile Include="Pyramid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -273,6 +278,11 @@
     <ClInclude Include="Vector2D.h">
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
+    <ClInclude Include="TexturedCube.h" />
+    <ClInclude Include="TVertexBuffer.h" />
+    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="MergedActor.h" />
+    <ClInclude Include="Pyramid.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Logo.jpg" />
