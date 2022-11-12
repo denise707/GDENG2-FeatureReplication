@@ -261,12 +261,12 @@ void MergedActor::drawBox(int width, int height)
 		deviceContext->setConstantBuffer(objList[i]->getVertexShader(), this->constantBuffer);
 		deviceContext->setConstantBuffer(objList[i]->getPixelShader(), this->constantBuffer);
 
-		deviceContext->setIndexBuffer(objList[i]->getIndexBuffer());
+		deviceContext->setIndexBuffer(objList[i]->getBoxIndexBuffer());
 		deviceContext->setVertexBuffer(objList[i]->getBoxVertexBuffer());
 
 		GraphicsEngine::get()->getImmediateDeviceContext()->setWireframeRenderMode();
 
-		deviceContext->drawIndexedTriangleList(objList[i]->getIndexBuffer()->getSizeIndexList(), 0, 0);
+		deviceContext->drawIndexedLineList(objList[i]->getIndexBuffer()->getSizeIndexList(), 0, 0);
 	}
 }
 

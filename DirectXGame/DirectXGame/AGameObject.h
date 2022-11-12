@@ -43,6 +43,7 @@ public:
 	VertexBuffer* getGizmoVertexBuffer();
 	VertexBuffer* getBoxVertexBuffer();
 
+	IndexBuffer* getBoxIndexBuffer();
 	IndexBuffer* getIndexBuffer();
 	ConstantBuffer* getConstantBuffer();
 
@@ -91,6 +92,7 @@ protected:
 	VertexBuffer* boxVertexBuffer;
 
 	IndexBuffer* indexBuffer;
+	IndexBuffer* boxIndexBuffer;
 	ConstantBuffer* constantBuffer;
 
 	VertexShader* vertexShader;

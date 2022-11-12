@@ -76,9 +76,33 @@ Cube::Cube(string name) :AGameObject(name)
 		1, 0, 7
 	};
 
+	unsigned int index_line_list[] =
+	{
+		1, 2,
+		1, 0, 
+		0, 3, 
+		2, 3,
+		
+		7, 0,
+		6, 7,
+		6, 1,
+
+		6, 5,
+		5, 4,
+		7, 4,
+
+		5, 2,
+		4, 3,
+		2, 3,
+	};
+
 	//Index Buffer
 	this->indexBuffer = GraphicsEngine::get()->createIndexBuffer();
 	this->indexBuffer->load(index_list, ARRAYSIZE(index_list));
+
+	//Index Buffer
+	this->boxIndexBuffer = GraphicsEngine::get()->createIndexBuffer();
+	this->boxIndexBuffer->load(index_line_list, ARRAYSIZE(index_line_list));
 
 	//Vertex Shader
 	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &sizeShader);
@@ -304,12 +328,12 @@ void Cube::drawBox(int width, int height)
 	deviceContext->setConstantBuffer(vertexShader, this->constantBuffer);
 	deviceContext->setConstantBuffer(pixelShader, this->constantBuffer);
 
-	deviceContext->setIndexBuffer(this->indexBuffer);
+	deviceContext->setIndexBuffer(this->boxIndexBuffer);
 	deviceContext->setVertexBuffer(this->boxVertexBuffer);
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setWireframeRenderMode();
 
-	deviceContext->drawIndexedTriangleList(this->indexBuffer->getSizeIndexList(), 0, 0);
+	deviceContext->drawIndexedLineList(this->boxIndexBuffer->getSizeIndexList(), 0, 0);
 }
 
 void Cube::setAnimSpeed(float speed)

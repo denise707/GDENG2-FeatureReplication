@@ -90,6 +90,11 @@ VertexBuffer* AGameObject::getBoxVertexBuffer()
 	return boxVertexBuffer;
 }
 
+IndexBuffer* AGameObject::getBoxIndexBuffer()
+{
+	return boxIndexBuffer;
+}
+
 IndexBuffer* AGameObject::getIndexBuffer()
 {
 	return indexBuffer;
