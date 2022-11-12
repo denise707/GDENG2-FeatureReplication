@@ -3,12 +3,12 @@
 
 #include <vector>
 
-class Cube : public AGameObject
+class Pyramid : public AGameObject
 {
 public:
-	Cube(string name);
+	Pyramid(string name);
 	//Cube(vector<Vertex> v1, vector<Vertex> v2, string name, void* shaderByteCode, size_t sizeShader);
-	~Cube();
+	~Pyramid();
 
 	void update(float deltaTime) override;
 	void draw(int width, int height) override;

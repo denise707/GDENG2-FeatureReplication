@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "InputSystem.h"
+#include "EngineTime.h"
 #include <iostream>
 
 Camera::Camera(string name) : AGameObject(name)
@@ -7,7 +8,7 @@ Camera::Camera(string name) : AGameObject(name)
 	this->setPosition(0.0f, 0.0f, -4.0f);
 	m_world_cam.setTranslation(this->getLocalPosition());
 	this->updateViewMatrix();
-	InputSystem::get()->addListener(this);
+	InputSystem::getInstance()->addListener(this);
 	originalPos = this->localMatrix;
 };
 
@@ -25,77 +26,122 @@ void Camera::update(float delta_time, int width, int height)
 	x = localPos.m_x;
 	y = localPos.m_y;
 	z = localPos.m_z;
+
+	// keu input for camerae
+	if (InputSystem::getInstance()->isKeyDown('W'))
+	{
+		m_forward = 1; //forward
+	}
+	else if (InputSystem::getInstance()->isKeyDown('S'))
+	{
+		m_forward = -1; //backwards
+	}
+	else if (InputSystem::getInstance()->isKeyDown('A'))
+	{
+		m_rightward = -1; //sideward (left)
+	}
+	else if (InputSystem::getInstance()->isKeyDown('D'))
+	{
+		m_rightward = 1; //sidewards (right)
+	}
+	else if (InputSystem::getInstance()->isKeyDown('E'))
+	{
+		m_upward = 1; //upwards
+	}
+	else if (InputSystem::getInstance()->isKeyDown('Q'))
+	{
+		m_upward = -1;//downwards
+	}
+
+	updateViewMatrix();
+
+
 }
 
 Matrix4x4 Camera::getViewMatrix()
 {
 	return this->localMatrix;
 }
-
+//
 void Camera::onKeyDown(int key)
 {
-	if (key == 'W')
-	{
-		m_forward = 1.0f;
-		this->updateViewMatrix();
-		
-	}
-	else if (key == 'S')
-	{
-		m_forward = -1.0f;
-		this->updateViewMatrix();
-	
-	}
-	else if (key == 'A')
-	{
-		m_rightward = -1.0f;
-		this->updateViewMatrix();
-		
-	}
-	else if (key == 'D')
-	{
-		m_rightward = 1.0f;
-		this->updateViewMatrix();
-	}
+	//if (key == 'W')
+	//{
+	//	m_forward = 1.0f;
+	//	this->updateViewMatrix();
+	//	
+	//}
+	//else if (key == 'S')
+	//{
+	//	m_forward = -1.0f;
+	//	this->updateViewMatrix();
+	//
+	//}
+	//else if (key == 'A')
+	//{
+	//	m_rightward = -1.0f;
+	//	this->updateViewMatrix();
+	//	
+	//}
+	//else if (key == 'D')
+	//{
+	//	m_rightward = 1.0f;
+	//	this->updateViewMatrix();
+	//}
+	//else if (key == 'E')
+	//{
+	//	m_upward = 1.0f;
+	//	this->updateViewMatrix();
+	//}
+	//else if (key == 'Q')
+	//{
+	//	m_upward = -1.0f;
+	//	this->updateViewMatrix();
+	//}
 }
 
 void Camera::onKeyUp(int key)
 {
-	m_forward = 0.0f;
-	m_rightward = 0.0f;
+	m_forward = 0;
+	m_rightward = 0;
+	m_upward = 0;
 }
 
-void Camera::onMouseMove(const Point& mouse_pos)
+void Camera::onMouseMove(const Point deltaPos)
 {
-	if(lmbDown)
+	if (this->mouseDown)
 	{
-		m_rot_x += (mouse_pos.m_y - (height / 2.0f)) * m_delta_time * 0.1f;
-		m_rot_y += (mouse_pos.m_x - (width / 2.0f)) * m_delta_time * 0.1f;
+		Vector3D v = this->getLocalRotation();
+		// may add speed factor
+		v.m_x += (deltaPos.m_y * EngineTime::getDeltaTime() * 0.1f);
+		v.m_y += (deltaPos.m_x * EngineTime::getDeltaTime() * 0.1f);
 
-		this->setRotation(m_rot_x, m_rot_y, this->getLocalRotation().m_z);
-		this->updateViewMatrix();
+		// update rotation
+		this->setRotation(v);
+
+		// centering mouse pos
+		//InputSystem::get()->setCursorPosition(Point((int)(width / 2.0f), (int)(height / 2.0f)));
 	}
 }
 
-void Camera::onLeftMouseDown(const Point& mouse_pos)
+void Camera::onLeftMouseDown(const Point deltaPos)
 {
-	lmbDown = true;
 }
 
-void Camera::onLeftMouseUp(const Point& mouse_pos)
+void Camera::onLeftMouseUp(const Point deltaPos)
 {
-	lmbDown = false;
 }
 
-void Camera::onRightMouseDown(const Point& mouse_pos)
+void Camera::onRightMouseDown(const Point deltaPos)
 {
-
+	this->mouseDown = true;
 }
 
-void Camera::onRightMouseUp(const Point& mouse_pos)
+void Camera::onRightMouseUp(const Point deltaPos)
 {
-
+	this->mouseDown = false;
 }
+
 
 void Camera::updateViewMatrix()
 {
@@ -115,10 +161,15 @@ void Camera::updateViewMatrix()
 	temp.setTranslation(getLocalPosition());
 	world_cam *= temp;
 
-	Vector3D new_pos = m_world_cam.getTranslation() + world_cam.getZDirection() * (m_forward * 0.1f);
-
+	Vector3D new_pos;
+	// z position
+	new_pos= m_world_cam.getTranslation() + world_cam.getZDirection() * (m_forward * 0.1f);
+	// x position
 	new_pos = new_pos + world_cam.getXDirection() * (m_rightward * 0.1f);
+	// y position
+	new_pos = new_pos + world_cam.getYDirection() * (m_upward * 0.1f);
 
+	this->setPosition(new_pos);
 	world_cam.setTranslation(new_pos);
 
 	m_world_cam = world_cam;
@@ -127,3 +178,4 @@ void Camera::updateViewMatrix()
 
 	this->localMatrix = world_cam;
 }
+

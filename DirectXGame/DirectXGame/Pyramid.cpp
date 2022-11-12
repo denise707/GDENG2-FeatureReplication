@@ -1,4 +1,4 @@
-#include "Cube.h"
+#include "Pyramid.h"
 #include <iostream>
 #include "DeviceContext.h"
 #include "EngineTime.h"
@@ -6,94 +6,69 @@
 #include "SceneCameraHandler.h"
 
 //Utils* utils = new Utils();
-Cube::Cube(string name) :AGameObject(name)
+Pyramid::Pyramid(string name) :AGameObject(name)
 {
 	//Create buffers for drawing. Vertex data that needs to be drawn are temporarily placed here.
 	Vertex vertex_list[] =
 	{
-		//FRONT FACE
 		{Vector3D(-0.5f,-0.5f,-0.5f),    Vector3D(1,0,0),  Vector3D(0,1,0) },
-		{Vector3D(-0.5f,0.5f,-0.5f),    Vector3D(0,1,0), Vector3D(0,1,1) },
-		{ Vector3D(0.5f,0.5f,-0.5f),   Vector3D(0,0,1),  Vector3D(1,0,0) },
-		{ Vector3D(0.5f,-0.5f,-0.5f),     Vector3D(1,1,0), Vector3D(0,0,1) },
-
-		//BACK FACE
-		{ Vector3D(0.5f,-0.5f,0.5f),    Vector3D(1,0,0), Vector3D(0,1,0) },
-		{ Vector3D(0.5f,0.5f,0.5f),    Vector3D(0,1,0), Vector3D(0,1,1) },
-		{ Vector3D(-0.5f,0.5f,0.5f),   Vector3D(0,0,1),  Vector3D(1,0,0) },
-		{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(1,1,0), Vector3D(0,0,1) }
+		{Vector3D(0.0f,0.5f,0.0f),    Vector3D(0,1,0), Vector3D(0,1,1) },
+		{ Vector3D(0.5f,-0.5f,-0.5f),   Vector3D(0,0,1),  Vector3D(1,0,0) },
+		{ Vector3D(0.5f,-0.5f,0.5f),     Vector3D(1,1,0), Vector3D(0,0,1) },
+		{ Vector3D(-0.5f,-0.5f,0.5f),    Vector3D(1,0,0), Vector3D(0,1,0) },
 	};
 
 	Vertex vertex_list_gizmo[] =
 	{
-		//FRONT FACE
 		{Vector3D(-0.5f,-0.5f,-0.5f),	Vector3D(1,0,0), Vector3D(0.2f,0,0) },
-		{Vector3D(-0.5f,0.5f,-0.5f),    Vector3D(1,0,0), Vector3D(0.2f,0.2f,0) },
-		{ Vector3D(0.5f,0.5f,-0.5f),     Vector3D(1,0,0),  Vector3D(0.2f,0.2f,0) },
-		{ Vector3D(0.5f,-0.5f,-0.5f),     Vector3D(1,0,0), Vector3D(0.2f,0,0) },
-
-		//BACK FACE
-		{Vector3D(0.5f,-0.5f,0.5f),	Vector3D(1,0,0), Vector3D(0,0.2f,0) },
-		{Vector3D(0.5f,0.5f,0.5f),    Vector3D(1,0,0), Vector3D(0,0.2f,0.2f) },
-		{ Vector3D(-0.5f,0.5f,0.5f),     Vector3D(1,0,0),  Vector3D(0,0.2f,0.2f) },
-		{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(1,0,0), Vector3D(0,0.2f,0) }
-	};
-
-	Vertex vertex_list_box[] =
-	{
-		//FRONT FACE
-		{Vector3D(-0.5f,-0.5f,-0.5f),	Vector3D(1,0,0), Vector3D(0.2f,0,0) },
-		{Vector3D(-0.5f,0.5f,-0.5f),    Vector3D(1,0,0), Vector3D(0.2f,0.2f,0) },
-		{ Vector3D(0.5f,0.5f,-0.5f),     Vector3D(1,0,0),  Vector3D(0.2f,0.2f,0) },
-		{ Vector3D(0.5f,-0.5f,-0.5f),     Vector3D(1,0,0), Vector3D(0.2f,0,0) },
-
-		//BACK FACE
-		{Vector3D(0.5f,-0.5f,0.5f),	Vector3D(1,0,0), Vector3D(0,0.2f,0) },
-		{Vector3D(0.5f,0.5f,0.5f),    Vector3D(1,0,0), Vector3D(0,0.2f,0.2f) },
-		{ Vector3D(-0.5f,0.5f,0.5f),     Vector3D(1,0,0),  Vector3D(0,0.2f,0.2f) },
-		{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(1,0,0), Vector3D(0,0.2f,0) }
+		{Vector3D(0.0f,0.5f,0.0f),    Vector3D(1,0,0), Vector3D(0.2f,0.2f,0) },
+		{Vector3D(0.5f,-0.5f,-0.5f),     Vector3D(1,0,0),  Vector3D(0.2f,0.2f,0) },
+		{Vector3D(0.5f,-0.5f,0.5f),     Vector3D(1,0,0), Vector3D(0.2f,0,0) },
+		{Vector3D(-0.5f,-0.5f,0.5f),	Vector3D(1,0,0), Vector3D(0,0.2f,0) }
 	};
 
 	unsigned int index_list[] =
 	{
 		//FRONT SIDE
-		0, 1, 2,
-		2, 3, 0,
-		//BACK SIDE
-		4, 5, 6,
-		6, 7, 4,
-		//TOP SIDE
-		1, 6, 5,
-		5, 2, 1,
-		//BOTTOM SIDE
-		7, 0, 3,
-		3, 4, 7,
-		//RIGHT SIDE
-		3, 2, 5,
-		5, 4, 3,
-		//LEFT SIDE
-		7, 6, 1,
-		1, 0, 7
+		//0, 1, 2,
+		//2, 4, 0
+		//0, 1, 3,
+		//3, 0, 4,
+		//4, 2, 1,
+		//1, 3, 4
+
+		0,1,2,
+		2,1,3,
+		3,1,4,
+		4,1,0,
+		0,2,3,
+		3,4,0
+	};
+
+	Vertex vertex_list_box[] =
+	{
+		{Vector3D(-0.5f,-0.5f,-0.5f),	Vector3D(1,0,0), Vector3D(0.2f,0,0) },
+		{Vector3D(0.0f,0.5f,0.0f),    Vector3D(1,0,0), Vector3D(0.2f,0.2f,0) },
+		{Vector3D(0.5f,-0.5f,-0.5f),     Vector3D(1,0,0),  Vector3D(0.2f,0.2f,0) },
+		{Vector3D(0.5f,-0.5f,0.5f),     Vector3D(1,0,0), Vector3D(0.2f,0,0) },
+		{Vector3D(-0.5f,-0.5f,0.5f),	Vector3D(1,0,0), Vector3D(0,0.2f,0) }
 	};
 
 	unsigned int index_line_list[] =
 	{
 		1, 2,
-		1, 0, 
-		0, 3, 
-		2, 3,
-		
-		7, 0,
-		6, 7,
-		6, 1,
+		1, 0,
+		0, 2,
 
-		6, 5,
-		5, 4,
-		7, 4,
-
-		5, 2,
-		4, 3,
 		2, 3,
+		1, 3,
+
+		3, 4,
+		1, 4,
+
+		4, 0,
+
+		0, 3
 	};
 
 	//Index Buffer
@@ -136,7 +111,7 @@ Cube::Cube(string name) :AGameObject(name)
 	boundBoxScale = Vector3D(1.1, 1.1, 1.1);
 }
 
-Cube::~Cube()
+Pyramid::~Pyramid()
 {
 	this->vertexBuffer->release();
 	this->indexBuffer->release();
@@ -145,12 +120,12 @@ Cube::~Cube()
 	this->constantBuffer->release();
 }
 
-void Cube::update(float delta_time)
+void Pyramid::update(float delta_time)
 {
 
 }
 
-void Cube::draw(int width, int height)
+void Pyramid::draw(int width, int height)
 {
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
@@ -208,11 +183,10 @@ void Cube::draw(int width, int height)
 	deviceContext->setVertexBuffer(this->vertexBuffer);
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setSolidRenderMode();
-
 	deviceContext->drawIndexedTriangleList(this->indexBuffer->getSizeIndexList(), 0, 0);
 }
 
-void Cube::drawGizmo(int width, int height)
+void Pyramid::drawGizmo(int width, int height)
 {
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
@@ -270,11 +244,10 @@ void Cube::drawGizmo(int width, int height)
 	deviceContext->setVertexBuffer(this->gizmoVertexBuffer);
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setSolidRenderMode();
-
 	deviceContext->drawIndexedTriangleList(this->indexBuffer->getSizeIndexList(), 0, 0);
 }
 
-void Cube::drawBox(int width, int height)
+void Pyramid::drawBox(int width, int height)
 {
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
@@ -336,7 +309,7 @@ void Cube::drawBox(int width, int height)
 	deviceContext->drawIndexedLineList(this->boxIndexBuffer->getSizeIndexList(), 0, 0);
 }
 
-void Cube::setAnimSpeed(float speed)
+void Pyramid::setAnimSpeed(float speed)
 {
 	this->speed = speed;
 }

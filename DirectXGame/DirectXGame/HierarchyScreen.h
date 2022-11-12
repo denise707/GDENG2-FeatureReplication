@@ -11,6 +11,7 @@ private:
 
 	virtual void drawUI() override;
 	friend class UIManager;
+	int index = 0;
 
 public:
 	static bool isOpen;

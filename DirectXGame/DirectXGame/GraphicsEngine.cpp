@@ -2,8 +2,11 @@
 #include "SwapChain.h"
 #include "DeviceContext.h"
 #include "VertexBuffer.h"
+#include "TVertexBuffer.h"
+
 #include "IndexBuffer.h"
 #include "ConstantBuffer.h"
+#include "TexturedVertexBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -54,14 +57,17 @@ bool GraphicsEngine::init()
 	m_dxgi_device->GetParent(__uuidof(IDXGIAdapter), (void**)&m_dxgi_adapter);
 	m_dxgi_adapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgi_factory);
 
+	//For render mode
+	InitRenderStates();
+
 	return true;
 }
 
 
 bool GraphicsEngine::release()
 {
-	if (m_vs)m_vs->Release();
-	if (m_ps)m_ps->Release();
+	if (vertexShader)vertexShader->Release();
+	if (pixelShader)pixelShader->Release();
 
 	if (m_vsblob)m_vsblob->Release();
 	if (m_psblob)m_psblob->Release();
@@ -95,6 +101,17 @@ DeviceContext* GraphicsEngine::getImmediateDeviceContext()
 VertexBuffer* GraphicsEngine::createVertexBuffer()
 {
 	return new VertexBuffer();
+}
+
+TVertexBuffer* GraphicsEngine::createTVertexBuffer()
+{
+	return new TVertexBuffer();
+}
+
+
+TexturedVertexBuffer* GraphicsEngine::createTexturedVertexBuffer()
+{
+	return new TexturedVertexBuffer();
 }
 
 IndexBuffer* GraphicsEngine::createIndexBuffer()
@@ -131,6 +148,11 @@ PixelShader* GraphicsEngine::createPixelShader(const void* shader_byte_code, siz
 	}
 
 	return ps;
+}
+
+ID3D11SamplerState* GraphicsEngine::getSamplerState()
+{
+	return samplerState;
 }
 
 bool GraphicsEngine::compileVertexShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size)
@@ -192,6 +214,22 @@ void GraphicsEngine::createStencilState(String mode)
 	m_d3d_device->CreateDepthStencilState(&desc, &m_stencil_state);
 }
 
+void GraphicsEngine::initializeSamplers()
+{
+	D3D11_SAMPLER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	desc.MinLOD = 0;
+	desc.MaxLOD = D3D11_FLOAT32_MAX;
+	this->getDevice()->CreateSamplerState(&desc, &samplerState);
+}
+
+
+
 ID3D11Device* GraphicsEngine::getDevice()
 {
 	return this->m_d3d_device;
@@ -207,4 +245,19 @@ GraphicsEngine* GraphicsEngine::get()
 {
 	static GraphicsEngine engine;
 	return &engine;
+}
+
+void GraphicsEngine::InitRenderStates()
+{
+	D3D11_RASTERIZER_DESC wfd;
+	ZeroMemory(&wfd, sizeof(D3D11_RASTERIZER_DESC));
+	wfd.FillMode = D3D11_FILL_WIREFRAME;
+	wfd.CullMode = D3D11_CULL_NONE;
+	wfd.DepthClipEnable = true;
+
+	m_d3d_device->CreateRasterizerState(&wfd, &mWireframeRS);
+
+	D3D11_RASTERIZER_DESC sd = CD3D11_RASTERIZER_DESC{ CD3D11_DEFAULT{} };
+
+	m_d3d_device->CreateRasterizerState(&sd, &mSolidRS);
 }

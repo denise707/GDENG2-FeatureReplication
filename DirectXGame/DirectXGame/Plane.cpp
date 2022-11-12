@@ -22,9 +22,6 @@ Plane::Plane(string name, void* shaderByteCode, size_t sizeShader) :AGameObject(
 		{ Vector3D(-0.5f,-0.5f,0.5f),     Vector3D(1,1,1), Vector3D(0,0.2f,0) }
 	};
 
-	this->vertexBuffer = GraphicsEngine::get()->createVertexBuffer();
-	this->vertexBuffer->load(vertex_list, sizeof(Vertex), ARRAYSIZE(vertex_list), shaderByteCode, sizeShader);
-
 	unsigned int index_list[] =
 	{
 		//FRONT SIDE
@@ -47,8 +44,24 @@ Plane::Plane(string name, void* shaderByteCode, size_t sizeShader) :AGameObject(
 		1, 0, 7
 	};
 
+	//Index Buffer
 	this->indexBuffer = GraphicsEngine::get()->createIndexBuffer();
 	this->indexBuffer->load(index_list, ARRAYSIZE(index_list));
+
+	//Vertex Shader
+	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shaderByteCode, &sizeShader);
+	vertexShader = GraphicsEngine::get()->createVertexShader(shaderByteCode, sizeShader);
+
+	//Vertex Buffer
+	this->vertexBuffer = GraphicsEngine::get()->createVertexBuffer();
+	this->vertexBuffer->load(vertex_list, sizeof(Vertex), ARRAYSIZE(vertex_list), shaderByteCode, sizeShader);
+
+	GraphicsEngine::get()->releaseCompiledShader();
+
+	//Pixel Shader
+	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shaderByteCode, &sizeShader);
+	pixelShader = GraphicsEngine::get()->createPixelShader(shaderByteCode, sizeShader);
+	GraphicsEngine::get()->releaseCompiledShader();
 
 	//Create constant buffer
 	CBData cbData = {};
@@ -63,6 +76,9 @@ Plane::~Plane()
 {
 	this->vertexBuffer->release();
 	this->indexBuffer->release();
+	this->vertexShader->release();
+	this->pixelShader->release();
+	this->constantBuffer->release();
 }
 
 void Plane::update(float delta_time)
@@ -70,7 +86,7 @@ void Plane::update(float delta_time)
 
 }
 
-void Plane::draw(int width, int height, VertexShader* vertex_shader, PixelShader* pixel_shader)
+void Plane::draw(int width, int height)
 {
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
@@ -116,8 +132,13 @@ void Plane::draw(int width, int height, VertexShader* vertex_shader, PixelShader
 	//cbData.projMatrix.setOrthoLH(width / 300.0f, height / 300.0f, -4.0f, 4.0f);
 
 	this->constantBuffer->update(deviceContext, &cbData);
-	deviceContext->setConstantBuffer(vertex_shader, this->constantBuffer);
-	deviceContext->setConstantBuffer(pixel_shader, this->constantBuffer);
+
+	//SET DEFAULT SHADER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(vertexShader);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
+
+	deviceContext->setConstantBuffer(vertexShader, this->constantBuffer);
+	deviceContext->setConstantBuffer(pixelShader, this->constantBuffer);
 
 	deviceContext->setIndexBuffer(this->indexBuffer);
 	deviceContext->setVertexBuffer(this->vertexBuffer);

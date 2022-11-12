@@ -31,6 +31,11 @@ Matrix4x4 SceneCameraHandler::getSceneCameraViewMatrix()
 	return sharedInstance->sceneCamera->getViewMatrix();
 }
 
+Camera* SceneCameraHandler::getSceneCamera()
+{
+	return this->sceneCamera;
+}
+
 SceneCameraHandler::SceneCameraHandler()
 {
 	this->sceneCamera = new Camera("Camera");

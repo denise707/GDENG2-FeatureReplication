@@ -10,6 +10,9 @@ class IndexBuffer;
 class ConstantBuffer;
 class VertexShader;
 class PixelShader;
+class TexturedVertexBuffer;
+class TVertexBuffer;
+
 
 class GraphicsEngine
 {
@@ -20,23 +23,35 @@ public:
 	//Release all the resources loaded
 	bool release();
 	~GraphicsEngine();
+
 public:
 	SwapChain* createSwapChain();
 	DeviceContext* getImmediateDeviceContext();
 	VertexBuffer* createVertexBuffer();
+	TVertexBuffer* createTVertexBuffer();
+	TexturedVertexBuffer* createTexturedVertexBuffer();
 	IndexBuffer* createIndexBuffer();
 	ConstantBuffer* createConstantBuffer();
 	VertexShader* createVertexShader(const void* shader_byte_code, size_t byte_code_size);
 	PixelShader* createPixelShader(const void* shader_byte_code, size_t byte_code_size);
+
+	ID3D11ShaderResourceView* getTexture();
+	ID3D11SamplerState* getSamplerState();
+
+
 public:
 	bool compileVertexShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size);
 	bool compilePixelShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size);
 	void releaseCompiledShader();
 	void createStencilState(String mode);
+	void initializeSamplers();
+
 public:
 	static GraphicsEngine* get();
 	ID3D11Device* getDevice();
 	ID3D11DepthStencilState* getStencilState();
+	ID3D11RasterizerState* mWireframeRS;
+	ID3D11RasterizerState* mSolidRS;
 private:
 	DeviceContext* m_imm_device_context;
 private:
@@ -52,13 +67,21 @@ private:
 	ID3DBlob* m_blob = nullptr;
 	ID3DBlob* m_vsblob = nullptr;
 	ID3DBlob* m_psblob = nullptr;
-	ID3D11VertexShader* m_vs = nullptr;
-	ID3D11PixelShader* m_ps = nullptr;
+	ID3D11VertexShader* vertexShader = nullptr;
+	ID3D11PixelShader* pixelShader = nullptr;
+	void InitRenderStates();
+
+	ID3D11SamplerState* samplerState;
+
+
 private:
 	friend class SwapChain;
 	friend class VertexBuffer;
+	friend class TVertexBuffer;
+	friend class TexturedVertexBuffer;
 	friend class IndexBuffer;
 	friend class ConstantBuffer;
 	friend class VertexShader;
 	friend class PixelShader;
+
 };

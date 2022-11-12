@@ -17,7 +17,16 @@ void AGameObject::update(float deltaTime)
 {
 }
 
-void AGameObject::draw(int width, int height, VertexShader* vertexShader, PixelShader* pixelShader)
+void AGameObject::draw(int width, int height)
+{
+}
+
+void AGameObject::drawGizmo(int width, int height)
+{
+
+}
+
+void AGameObject::drawBox(int width, int height)
 {
 }
 
@@ -66,9 +75,50 @@ Vector3D AGameObject::getLocalRotation()
 	return this->localRotation;
 }
 
+VertexBuffer* AGameObject::getVertexBuffer()
+{
+	return vertexBuffer;
+}
+
+VertexBuffer* AGameObject::getGizmoVertexBuffer()
+{
+	return gizmoVertexBuffer;
+}
+
+VertexBuffer* AGameObject::getBoxVertexBuffer()
+{
+	return boxVertexBuffer;
+}
+
+IndexBuffer* AGameObject::getBoxIndexBuffer()
+{
+	return boxIndexBuffer;
+}
+
+IndexBuffer* AGameObject::getIndexBuffer()
+{
+	return indexBuffer;
+}
+
+ConstantBuffer* AGameObject::getConstantBuffer()
+{
+	return constantBuffer;
+}
+
 string AGameObject::getName()
 {
 	return this->name;
+}
+
+
+VertexShader* AGameObject::getVertexShader()
+{
+	return vertexShader;
+}
+
+PixelShader* AGameObject::getPixelShader()
+{
+	return pixelShader;
 }
 
 void AGameObject::reset()
