@@ -14,7 +14,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-//Utils* utils = new Utils();
 TexturedQuad::TexturedQuad(string name, string texture) :AGameObject(name)
 {
 	Vector3D position_list[] =
@@ -81,18 +80,14 @@ TexturedQuad::TexturedQuad(string name, string texture) :AGameObject(name)
 	this->constantBuffer->load(&cbData, sizeof(CBData));
 
 
-	//Set Texture
 	// load texture
 	GraphicsEngine::get()->initializeSamplers();
 
-	ID3D11ShaderResourceView* myTex;
-
 	int width = 0;
 	int height = 0;
-	bool ret = LoadTextureFromFile(texture.c_str(), &myTex, &width, &height);
+	bool ret = LoadTextureFromFile(texture.c_str(), &myTexture, &width, &height);
 	IM_ASSERT(ret);
 
-	this->myTexture = myTex;
 	this->samplerState = GraphicsEngine::get()->getSamplerState();
 
 
@@ -329,6 +324,17 @@ bool TexturedQuad:: LoadTextureFromFile(const char* filename, ID3D11ShaderResour
 	stbi_image_free(image_data);
 
 	return true;
+}
+
+void TexturedQuad::setTexture(ID3D11ShaderResourceView* tex)
+{
+	this->myTexture = tex;
+}
+
+void TexturedQuad::setSamplerState(ID3D11SamplerState* sampler)
+{
+	this->samplerState = sampler;
+
 }
 
 
