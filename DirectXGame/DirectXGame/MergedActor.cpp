@@ -25,34 +25,6 @@ MergedActor::MergedActor(string name, void* shaderByteCode, size_t sizeShader, A
 	AGameObject* obj1Copy = new AGameObject("copy1"); memcpy(obj1Copy, obj1, sizeof(AGameObject));
 	AGameObject* obj2Copy = new AGameObject("copy2"); memcpy(obj2Copy, obj2, sizeof(AGameObject));
 
-
-	//VertexBuffer* vertexBuffer1Copy = GraphicsEngine::get()->createVertexBuffer();
-	//IndexBuffer* indexBuffer1Copy = GraphicsEngine::get()->createIndexBuffer();
-	//ConstantBuffer* constantBuffer1Copy = GraphicsEngine::get()->createConstantBuffer();
-
-	//VertexBuffer* vertexBuffer2Copy = GraphicsEngine::get()->createVertexBuffer();
-	//IndexBuffer* indexBuffer2Copy = GraphicsEngine::get()->createIndexBuffer();
-	//ConstantBuffer* constantBuffer2Copy = GraphicsEngine::get()->createConstantBuffer();
-
-	//memcpy(vertexBuffer1Copy, obj1->getConstantBuffer(), sizeof(vertexBuffer));
-	//memcpy(indexBuffer1Copy, obj1->getConstantBuffer(), sizeof(indexBuffer));
-	//memcpy(constantBuffer1Copy, obj1->getConstantBuffer(), sizeof(ConstantBuffer));
-
-
-	//memcpy(vertexBuffer2Copy, obj2->getConstantBuffer(), sizeof(vertexBuffer));
-	//memcpy(indexBuffer2Copy, obj2->getConstantBuffer(), sizeof(indexBuffer));
-	//memcpy(constantBuffer2Copy, obj2->getConstantBuffer(), sizeof(ConstantBuffer));
-
-
-	/*vertexBuffer_table[obj1] = vertexBuffer1Copy;
-	indexBuffer_table[obj1] = indexBuffer1Copy;
-	constantBuffer_table[obj1] = constantBuffer1Copy;
-
-	vertexBuffer_table[obj2] = vertexBuffer1Copy;
-	indexBuffer_table[obj2] = indexBuffer1Copy;
-	constantBuffer_table[obj2] = constantBuffer1Copy;*/
-
-
 	objList.push_back(obj1Copy);
 	objList.push_back(obj2Copy);
 
@@ -69,15 +41,11 @@ MergedActor::MergedActor(string name, vector<AGameObject*> toCombine) : AGameObj
 
 	setAnimSpeed(4);
 
-
 	for (int i = 0; i < toCombine.size(); i++)
 	{
-			
 		AGameObject* objCopy = new AGameObject("copy"); memcpy(objCopy, toCombine[i], sizeof(AGameObject));
 		if (objCopy->getBoxVertexBuffer() == nullptr)
 		{
-			//std::cout << ((MergedActor*)objCopy)->getObjList().size();
-
 			if (((MergedActor*)objCopy)->getObjList().size() == 0)
 			{
 				std::cout << "a\n";
@@ -91,9 +59,9 @@ MergedActor::MergedActor(string name, vector<AGameObject*> toCombine) : AGameObj
 				{
 					std::cout << j << "b\n";
 					AGameObject* childCopy = new AGameObject("copy"); memcpy(childCopy, ((MergedActor*)objCopy)->getObjList()[j], sizeof(AGameObject));
-					childCopy->setPosition(objCopy->getLocalPosition());
-					childCopy->setRotation(objCopy->getLocalRotation());
-					childCopy->setScale(objCopy->getLocalScale());
+					childCopy->setPosition(childCopy->getLocalPosition() + objCopy->getLocalPosition());
+					childCopy->setRotation(childCopy->getLocalRotation() + objCopy->getLocalRotation());
+					childCopy->setScale(childCopy->getLocalScale() + objCopy->getLocalScale());
 
 					objList.push_back(childCopy);
 				}
@@ -102,12 +70,7 @@ MergedActor::MergedActor(string name, vector<AGameObject*> toCombine) : AGameObj
 
 		else 
 			objList.push_back(objCopy);
-		
-		
-		
 	}
-	if (!objList.empty())
-	std::cout << objList.size();
 }
 
 MergedActor::~MergedActor()
