@@ -27,15 +27,20 @@ void HierarchyScreen::drawUI()
         static bool isEnabled = false;
         
         //Outline Selection
-        ImGui::SetNextWindowSize(ImVec2(315, 200));
-        ImGui::Begin("Hierarchy", &isOpen, ImGuiWindowFlags_NoResize);
+        //ImGui::SetNextWindowSize(ImVec2(315, 200));
+        ImGui::Begin("Hierarchy", &isOpen);
         ImGui::Spacing();
         ImGui::Spacing();
         ImGui::Spacing();
 
+        string currGO = {};
+
         for (int i = 0; i < GameObjectManager::get()->objList.size(); i++) {
             string str = "Select " + to_string(i);
             const char* selectLabel = str.data();
+
+            currGO = GameObjectManager::get()->objList[i]->getName();
+
             if (ImGui::Button(selectLabel)) {
                 GameObjectManager::get()->selectedObjList[i] = true;
             }
@@ -50,6 +55,7 @@ void HierarchyScreen::drawUI()
             const char* objLabel = str.data();
             if (ImGui::Button(objLabel)) {
                 index = i;
+
                 isEnabled = GameObjectManager::get()->objList[index]->enableBoundingBox;
                 xP = GameObjectManager::get()->objList[index]->getLocalPosition().m_x;
                 yP = GameObjectManager::get()->objList[index]->getLocalPosition().m_y;
@@ -58,6 +64,10 @@ void HierarchyScreen::drawUI()
                 yS = GameObjectManager::get()->objList[index]->boundBoxScale.m_y;
                 zS = GameObjectManager::get()->objList[index]->boundBoxScale.m_z;
             }
+
+            //name
+            ImGui::SameLine();
+            ImGui::Text(currGO.c_str());
         }
         ImGui::End();
 
@@ -67,6 +77,14 @@ void HierarchyScreen::drawUI()
             ImGui::Begin("Inspector", &isOpen, ImGuiWindowFlags_NoResize);
             ImGui::Spacing();
             ImGui::Spacing();
+            ImGui::Spacing();
+            //name
+
+            currGO = GameObjectManager::get()->objList[index]->getName();
+
+            ImGui::Text("Name: ");
+            ImGui::SameLine();
+            ImGui::Text(currGO.c_str());
             ImGui::Spacing();
 
             ImGui::Text("Position: ");

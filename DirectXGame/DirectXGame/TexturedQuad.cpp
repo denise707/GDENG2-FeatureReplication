@@ -171,6 +171,8 @@ void TexturedQuad::draw(int width, int height)
 	GraphicsEngine::get()->getImmediateDeviceContext()->setShaderResources(0, 1, this->myTexture);
 
 
+	deviceContext->setSolidRenderMode();
+
 	//SET DEFAULT BUFFER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
 	deviceContext->setConstantBuffer(vertexShader, this->constantBuffer);
 	deviceContext->setConstantBuffer(pixelShader, this->constantBuffer);
