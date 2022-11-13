@@ -157,6 +157,17 @@ public:
 		m_mat[3][2] = (-znear * zfar) / (zfar - znear);
 	}
 
+	void test(float fov, float aspect, float znear, float zfar, float width, float height)
+	{
+		float yscale = 1.0f / tan(fov / 2.0f);
+		float xscale = yscale / aspect;
+		m_mat[0][0] = xscale;
+		m_mat[1][1] = yscale;
+		m_mat[2][2] = zfar / (zfar - znear);
+		m_mat[2][3] = 1.0f;
+		m_mat[3][2] = (-znear * zfar) / (zfar - znear);
+	}
+
 	void setOrthoLH(float width, float height, float near_plane, float far_plane)
 	{
 		setIdentity();

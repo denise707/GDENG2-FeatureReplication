@@ -109,7 +109,7 @@ void TexturedQuad::update(float delta_time)
 
 void TexturedQuad::draw(int width, int height)
 {
-	setLookAt(SceneCameraHandler::getInstance()->getSceneCamera()->getLocalPosition());
+	setLookAt(SceneCameraHandler::getInstance()->getActiveCamera()->getLocalPosition());
 
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();

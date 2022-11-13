@@ -11,15 +11,7 @@ public:
 
 	void update(float deltaTime, int width, int height);
 	Matrix4x4 getViewMatrix();
-
-	//// Inherited via InputListener
-	//virtual void onKeyDown(int key) override;
-	//virtual void onKeyUp(int key) override;
-	//virtual void onMouseMove(const Point& mouse_pos) override;
-	//virtual void onLeftMouseDown(const Point& mouse_pos) override;
-	//virtual void onLeftMouseUp(const Point& mouse_pos) override;
-	//virtual void onRightMouseDown(const Point& mouse_pos) override;
-	//virtual void onRightMouseUp(const Point& mouse_pos) override;
+	void setCameraStatus(bool flag);
 
 	//Set's Ver
 	// Inherited via InputListener
@@ -30,6 +22,20 @@ public:
 	virtual void onLeftMouseUp(const Point deltaPos) override;
 	virtual void onRightMouseDown(const Point deltaPos) override;
 	virtual void onRightMouseUp(const Point deltaPos) override;
+
+
+	float getFOV();
+	float getNearZ();
+	float getFarZ();
+	float getAspectRatio();
+
+
+	void setFOV(float fov);
+	void setNearZ(float nz);
+	void setFarZ(float fz);
+	void setAspect(float aspectRatio);
+
+
 
 private:
 	void updateViewMatrix();
@@ -54,10 +60,16 @@ private:
 
 	Matrix4x4 m_world_cam;
 	Matrix4x4 originalPos;
+	bool isActive = false;
+
 
 	float mouseDown = false;
 
-	//bool lmbDown = false;
+	float FOV = 0;
+	float nearZ = 0;
+	float farZ = 0;
+	float aspectRatio = 0;
+
 
 
 };

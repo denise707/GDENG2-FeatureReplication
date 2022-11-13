@@ -155,6 +155,9 @@ void Cube::draw(int width, int height)
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
 	DeviceContext* deviceContext = graphEngine->getImmediateDeviceContext();
 
+	Camera* ActiveCamera = SceneCameraHandler::getInstance()->getActiveCamera();
+	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
+
 	CBData cbData = {};
 
 	cbData.time = deltaTime;
@@ -185,14 +188,38 @@ void Cube::draw(int width, int height)
 
 	temp.setIdentity();
 	temp.setTranslation(getLocalPosition());
-	cbData.worldMatrix *= temp;
 
-	//Add camera transformation
-	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
-	cbData.viewMatrix = cameraMatrix;
+	//// SETTING UP CONSTANTS
+	//cbData.worldMatrix *= temp; //WORLD
+	//cbData.viewMatrix = cameraMatrix; // view
+	//cbData.projMatrix.setPerspectiveFovLH(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ()); // projection
 
-	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	// save data when player camera
+	if (ActiveCamera == SceneCameraHandler::getInstance()->getPlayerCamera())
+	{
+		cout << "player cam\n";
+		// SETTING UP CONSTANTS
+		cbData.worldMatrix *= temp; //WORLD
+		cbData.viewMatrix = cameraMatrix; // view
+		cbData.projMatrix.setPerspectiveFovLH(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ()); // projection
+
+		SceneCameraHandler::getInstance()->worldmat = cbData.worldMatrix;
+		SceneCameraHandler::getInstance()->viewmat = cbData.viewMatrix;
+		SceneCameraHandler::getInstance()->projmat = cbData.projMatrix;
+	}
+	else //using scene cam
+	{
+		cout << "scene cam\n";
+		// SETTING UP CONSTANTS
+		cbData.worldMatrix *= temp; //WORLD
+		cbData.viewMatrix = cameraMatrix; // view
+		cbData.projMatrix.test(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ(), width, height); // projection
+
+		//cbData.worldMatrix = SceneCameraHandler::getInstance()->worldmat ; //WORLD
+		//cbData.viewMatrix = SceneCameraHandler::getInstance()->viewmat; // view
+		//cbData.projMatrix *= SceneCameraHandler::getInstance()->projmat; // projection
+	}
+	
 
 	this->constantBuffer->update(deviceContext, &cbData);
 

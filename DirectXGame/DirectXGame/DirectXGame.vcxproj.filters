@@ -163,6 +163,7 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="MergedActor.cpp" />
     <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="Frustum.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -283,6 +284,10 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="MergedActor.h" />
     <ClInclude Include="Pyramid.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="Utils.h">
+      <Filter>GameEngine\UISystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Logo.jpg" />

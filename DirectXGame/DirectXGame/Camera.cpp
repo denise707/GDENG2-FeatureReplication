@@ -18,42 +18,46 @@ Camera::~Camera()
 
 void Camera::update(float delta_time, int width, int height)
 {
-	this->width = width;
-	this->height = height;
-	m_delta_time = delta_time;
+	if (isActive)
+	{
+		this->width = width;
+		this->height = height;
+		m_delta_time = delta_time;
 
-	Vector3D localPos = this->getLocalPosition();
-	x = localPos.m_x;
-	y = localPos.m_y;
-	z = localPos.m_z;
+		Vector3D localPos = this->getLocalPosition();
+		x = localPos.m_x;
+		y = localPos.m_y;
+		z = localPos.m_z;
 
-	// keu input for camerae
-	if (InputSystem::getInstance()->isKeyDown('W'))
-	{
-		m_forward = 1; //forward
-	}
-	else if (InputSystem::getInstance()->isKeyDown('S'))
-	{
-		m_forward = -1; //backwards
-	}
-	else if (InputSystem::getInstance()->isKeyDown('A'))
-	{
-		m_rightward = -1; //sideward (left)
-	}
-	else if (InputSystem::getInstance()->isKeyDown('D'))
-	{
-		m_rightward = 1; //sidewards (right)
-	}
-	else if (InputSystem::getInstance()->isKeyDown('E'))
-	{
-		m_upward = 1; //upwards
-	}
-	else if (InputSystem::getInstance()->isKeyDown('Q'))
-	{
-		m_upward = -1;//downwards
-	}
+		// keu input for camerae
+		if (InputSystem::getInstance()->isKeyDown('W'))
+		{
+			m_forward = 1; //forward
+		}
+		else if (InputSystem::getInstance()->isKeyDown('S'))
+		{
+			m_forward = -1; //backwards
+		}
+		else if (InputSystem::getInstance()->isKeyDown('A'))
+		{
+			m_rightward = -1; //sideward (left)
+		}
+		else if (InputSystem::getInstance()->isKeyDown('D'))
+		{
+			m_rightward = 1; //sidewards (right)
+		}
+		else if (InputSystem::getInstance()->isKeyDown('E'))
+		{
+			m_upward = 1; //upwards
+		}
+		else if (InputSystem::getInstance()->isKeyDown('Q'))
+		{
+			m_upward = -1;//downwards
+		}
 
-	updateViewMatrix();
+		updateViewMatrix();
+	}
+	
 
 
 }
@@ -62,9 +66,17 @@ Matrix4x4 Camera::getViewMatrix()
 {
 	return this->localMatrix;
 }
-//
+
+
+void Camera::setCameraStatus(bool flag)
+{
+	isActive = flag;
+}
+
 void Camera::onKeyDown(int key)
 {
+	if (this->isActive)std::cout << " Object: " " \n";
+
 	//if (key == 'W')
 	//{
 	//	m_forward = 1.0f;
@@ -109,7 +121,8 @@ void Camera::onKeyUp(int key)
 
 void Camera::onMouseMove(const Point deltaPos)
 {
-	if (this->mouseDown)
+	
+	if (this->mouseDown && isActive)
 	{
 		Vector3D v = this->getLocalRotation();
 		// may add speed factor
@@ -178,4 +191,45 @@ void Camera::updateViewMatrix()
 
 	this->localMatrix = world_cam;
 }
+
+float Camera::getFOV()
+{
+	return this->FOV;
+}
+
+float Camera::getNearZ()
+{
+	return this->nearZ;
+}
+
+float Camera::getFarZ()
+{
+	return this->farZ;
+}
+
+float Camera::getAspectRatio()
+{
+	return aspectRatio;
+}
+
+void Camera::setFOV(float FOV)
+{
+	this->FOV = FOV;
+}
+
+void Camera::setNearZ(float nz)
+{
+	this->nearZ = nz;
+}
+
+void Camera::setFarZ(float fz)
+{
+	this->farZ = fz;
+}
+
+void Camera::setAspect(float aspectRatio)
+{
+	this->aspectRatio = aspectRatio;
+}
+
 

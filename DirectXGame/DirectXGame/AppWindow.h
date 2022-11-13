@@ -22,6 +22,8 @@
 #include "Cube.h"
 #include "Plane.h"
 #include "TexturedQuad.h"
+#include "Frustum.h"
+#include "Camera.h"
 
 
 
@@ -41,15 +43,6 @@ public:
 	virtual void onFocus() override;
 	virtual void onKillFocus() override;
 
-	 //Inherited via InputListener
-	/*virtual void onKeyDown(int key) override;
-	virtual void onKeyUp(int key) override;
-	virtual void onMouseMove(const Point& mouse_pos) override;
-	virtual void onLeftMouseDown(const Point& mouse_pos) override;
-	virtual void onLeftMouseUp(const Point& mouse_pos) override;
-	virtual void onRightMouseDown(const Point& mouse_pos) override;
-	virtual void onRightMouseUp(const Point& mouse_pos) override;*/
-
 
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;
@@ -61,8 +54,6 @@ public:
 	virtual void onRightMouseDown(const Point deltaPos) override;
 	virtual void onRightMouseUp(const Point deltaPos) override;
 
-	bool LoadTextureFromFile(const char* filename, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height);
-
 private:
 	SwapChain* m_swap_chain;
 	
@@ -72,6 +63,14 @@ private:
 	vector<AGameObject*> outlineList;
 
 	TexturedQuad* quad;
+	Camera* cameraObj;
+	Camera* ActiveCamera;
+
+	Frustum* frustum;
+
+
+
+	bool isUsingCameraObj = false;
 
 	int width = 0;
 	int height = 0;

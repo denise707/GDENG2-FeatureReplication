@@ -19,7 +19,7 @@ void GameObjectManager::initialize()
 	width = UIManager::WINDOW_WIDTH;
 	height = UIManager::WINDOW_HEIGHT;
 
-	initalizePlayerStart();
+	//initalizePlayerStart();
 }
 
 void GameObjectManager::createCube()

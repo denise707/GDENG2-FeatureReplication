@@ -54,7 +54,6 @@ void AppWindow::onCreate()
 	InputSystem::getInstance()->addListener(this);
 	//InputSystem::getInstance()->showCursor(false);
 
-
 	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
 
@@ -63,9 +62,30 @@ void AppWindow::onCreate()
 	
 	//Initialize Scene Camera
 	SceneCameraHandler::initialize();
+	// CREATE CAMERAS
+	cameraObj = new Camera("ObjCam");
+	ActiveCamera = SceneCameraHandler::getInstance()->getActiveCamera();
+
+	//UPDATE CAMERA PARAMETERS
+	float aspectRatio = (float)(rc.right - rc.left) / (float)(rc.bottom - rc.top);
+
+
+	cameraObj->setAspect(aspectRatio);
+	cameraObj->setFOV(aspectRatio);
+	cameraObj->setNearZ(1);
+	cameraObj->setFarZ(10);
+
+	ActiveCamera->setAspect(aspectRatio);
+	ActiveCamera->setFOV(aspectRatio);
+	ActiveCamera->setNearZ(1);
+	ActiveCamera->setFarZ(100);
+
+	SceneCameraHandler::getInstance()->SetPlayerCamera(cameraObj);
+
 
 	//Create Object and Gizmo Instances
 	GameObjectManager::get()->initialize();
+	frustum = new Frustum("frustum", shader_byte_code, size_shader, cameraObj);
 
 	// Initialize UIManager
 	UIManager::getInstance()->initialize(Window::getHWND());
@@ -89,11 +109,13 @@ void AppWindow::onUpdate()
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
 
+
 	//UPDATE CAMERA
 	SceneCameraHandler::getInstance()->update(EngineTime::getDeltaTime(), width, height);
 
 	//Outline Selected Objects
 	GameObjectManager::get()->updateObjects();
+	frustum->draw(width, height);
 
 	//Draw UI
 	UIManager::getInstance()->drawAllUI();
@@ -111,7 +133,7 @@ void AppWindow::onDestroy()
 
 void AppWindow::onFocus()
 {
-	InputSystem::getInstance()->addListener(this);
+	//InputSystem::getInstance()->addListener(this);
 }
 
 void AppWindow::onKillFocus()
@@ -121,12 +143,18 @@ void AppWindow::onKillFocus()
 
 void AppWindow::onKeyDown(int key)
 {
+	if (key == 'F')
+	{
+		isUsingCameraObj = !isUsingCameraObj;
+		// SWITCH SCENE CAMERA (F KEY)
+		SceneCameraHandler::getInstance()->switchCamera(isUsingCameraObj);
 
+	}
 }
 
 void AppWindow::onKeyUp(int key)
 {
-	
+
 }
 
 void AppWindow::onMouseMove(const Point deltaPos)

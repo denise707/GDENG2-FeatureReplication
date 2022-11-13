@@ -12,7 +12,20 @@ public:
 	void update(float deltaTime, int width, int height);
 
 	Matrix4x4 getSceneCameraViewMatrix();
+	Camera* getActiveCamera();
 	Camera* getSceneCamera();
+	Camera* getPlayerCamera();
+
+	void SetSceneCamera(Camera* sceneCam);
+	void SetPlayerCamera(Camera* playerCam);
+
+	void switchCamera(bool isUsingPlayerCam);
+
+	Matrix4x4 worldmat;
+	Matrix4x4 viewmat;
+	Matrix4x4 projmat;
+
+
 
 
 private:
@@ -22,7 +35,11 @@ private:
 	SceneCameraHandler& operator=(SceneCameraHandler const&) {};
 	static SceneCameraHandler* sharedInstance;
 
-	Camera* sceneCamera;
+	Camera* ActiveCamera;
+	Camera* sceneCam;
+	Camera* playerCam;
+
+
 	int width = 0;
 	int height = 0;
 };
