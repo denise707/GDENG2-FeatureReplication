@@ -12,6 +12,7 @@
 #include "OutlineGizmo.h"
 #include "UIManager.h"
 #include "GameObjectManager.h"
+#include "Utils.h"
 
 vector<bool> AppWindow::selectedObjList = {false, false, false};
 
@@ -69,9 +70,10 @@ void AppWindow::onCreate()
 	//UPDATE CAMERA PARAMETERS
 	float aspectRatio = (float)(rc.right - rc.left) / (float)(rc.bottom - rc.top);
 
+	float fov = Utils::degToRad(45);
 
 	cameraObj->setAspect(aspectRatio);
-	cameraObj->setFOV(aspectRatio);
+	cameraObj->setFOV(fov);
 	cameraObj->setNearZ(1);
 	cameraObj->setFarZ(10);
 
@@ -81,11 +83,34 @@ void AppWindow::onCreate()
 	ActiveCamera->setFarZ(100);
 
 	SceneCameraHandler::getInstance()->SetPlayerCamera(cameraObj);
-
+	isUsingCameraObj = true;
+	SceneCameraHandler::getInstance()->switchCamera(isUsingCameraObj);
 
 	//Create Object and Gizmo Instances
-	GameObjectManager::get()->initialize();
-	frustum = new Frustum("frustum", shader_byte_code, size_shader, cameraObj);
+	//GameObjectManager::get()->initialize();
+
+	frustum = new Frustum("Frustum", shader_byte_code, size_shader, cameraObj);
+	objList.push_back(frustum);
+
+	Plane* planeObj = new Plane("Plane", shader_byte_code, size_shader);
+	planeObj->setPosition(0.0, 0.0, 0.0f);
+	planeObj->setScale(5, 5, 0);
+	planeObj->setRotation(Utils::degToRad(90), 0, 0);
+	objList.push_back(planeObj);
+
+	Cube* cubeObj = new Cube("Cube");
+	cubeObj->setPosition(0.0, 0.9, 0.0f);
+	objList.push_back(cubeObj);
+
+	Cube* cubeObj1 = new Cube("Cube");
+	cubeObj1->setPosition(-1.5, 2.0, 0.0f);
+	objList.push_back(cubeObj1);
+
+	Cube* cubeObj2 = new Cube("Cube");
+	cubeObj2->setPosition(-1.5, 3.0, -2.0f);
+	objList.push_back(cubeObj2);
+
+
 
 	// Initialize UIManager
 	UIManager::getInstance()->initialize(Window::getHWND());
@@ -109,13 +134,29 @@ void AppWindow::onUpdate()
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
 
-
 	//UPDATE CAMERA
 	SceneCameraHandler::getInstance()->update(EngineTime::getDeltaTime(), width, height);
 
 	//Outline Selected Objects
-	GameObjectManager::get()->updateObjects();
-	frustum->draw(width, height);
+	//GameObjectManager::get()->updateObjects();
+	//frustum->draw(width, height);
+
+
+
+	for (int i = 0; i < objList.size(); i++)
+	{
+		// dont draw frustum when using obj camera
+		if (isUsingCameraObj && objList[i]->getName() != "Frustum")
+		{
+			objList[i]->draw(width, height);
+
+		}
+		else if (!isUsingCameraObj)
+		{
+			objList[i]->draw(width, height);
+		}
+
+	}
 
 	//Draw UI
 	UIManager::getInstance()->drawAllUI();

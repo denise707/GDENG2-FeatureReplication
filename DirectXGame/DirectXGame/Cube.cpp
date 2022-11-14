@@ -194,6 +194,7 @@ void Cube::draw(int width, int height)
 	//cbData.viewMatrix = cameraMatrix; // view
 	//cbData.projMatrix.setPerspectiveFovLH(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ()); // projection
 
+#pragma start region Experiment
 	// save data when player camera
 	if (ActiveCamera == SceneCameraHandler::getInstance()->getPlayerCamera())
 	{
@@ -209,17 +210,36 @@ void Cube::draw(int width, int height)
 	}
 	else //using scene cam
 	{
-		cout << "scene cam\n";
-		// SETTING UP CONSTANTS
-		cbData.worldMatrix *= temp; //WORLD
-		cbData.viewMatrix = cameraMatrix; // view
-		cbData.projMatrix.test(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ(), width, height); // projection
+		Matrix4x4 camWmat = SceneCameraHandler::getInstance()->worldmat;
+		Matrix4x4 camVmat = SceneCameraHandler::getInstance()->viewmat;
+		Matrix4x4 camPmat = SceneCameraHandler::getInstance()->projmat;
 
-		//cbData.worldMatrix = SceneCameraHandler::getInstance()->worldmat ; //WORLD
-		//cbData.viewMatrix = SceneCameraHandler::getInstance()->viewmat; // view
-		//cbData.projMatrix *= SceneCameraHandler::getInstance()->projmat; // projection
+		Matrix4x4 camTmat;
+		camTmat.setIdentity();
+
+		/*GUIDE: transform matrix of the primitves (based from player cam)
+		- VIEW AND PROJECTION - normalized projection 2D objects
+		- VIEW  - projected 3D objects (transformed)
+		- including WORLD matrix messes up the coordinates
+		*/
+
+		//camTmat *= camWmat; // WORLD
+		camTmat *= camVmat; // VIEW
+		camTmat *= camPmat; // PROJ
+
+		cout << "scene cam\n";
+
+		// SETTING UP CONSTANTS
+		temp *= camTmat; // experiment
+		cbData.worldMatrix *= temp; //world
+		cbData.viewMatrix = cameraMatrix; // view
+		cbData.projMatrix.setPerspectiveFovLH(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ()); // projection
+		//cbData.projMatrix.setOrthoLH(width, height, ActiveCamera->getNearZ(), ActiveCamera->getFarZ());
+		
+
 	}
-	
+#pragma endregion Experiment
+
 
 	this->constantBuffer->update(deviceContext, &cbData);
 

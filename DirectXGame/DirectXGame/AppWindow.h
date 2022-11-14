@@ -25,6 +25,7 @@
 #include "Frustum.h"
 #include "Camera.h"
 
+#include <vector>
 
 
 class AppWindow : public Window, public InputListener
@@ -60,15 +61,12 @@ private:
 private:
 	//Instantiated objects
 	vector<AGameObject*> objList;
-	vector<AGameObject*> outlineList;
 
 	TexturedQuad* quad;
 	Camera* cameraObj;
 	Camera* ActiveCamera;
 
 	Frustum* frustum;
-
-
 
 	bool isUsingCameraObj = false;
 

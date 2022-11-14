@@ -25,9 +25,6 @@ public:
 	Matrix4x4 viewmat;
 	Matrix4x4 projmat;
 
-
-
-
 private:
 	SceneCameraHandler();
 	~SceneCameraHandler();
