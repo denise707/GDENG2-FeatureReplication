@@ -171,19 +171,62 @@ void Frustum::draw(int width, int height)
 
 	temp.setIdentity();
 	temp.setRotationZ(objCamera->getLocalRotation().m_z);
-	cbData.worldMatrix *= temp;
+	//cbData.worldMatrix *= temp;
 
 	temp.setIdentity();
 	Vector3D pos = objCamera->getLocalPosition();
 	temp.setTranslation(Vector3D(pos.m_x, pos.m_y, pos.m_z + (objCamera->getNearZ() / 2)));
-	cbData.worldMatrix *= temp;
+	//cbData.worldMatrix *= temp;
 
 	//Add camera transformation
-	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
-	cbData.viewMatrix = cameraMatrix;
-
+	
 	Camera* ActiveCamera = SceneCameraHandler::getInstance()->getActiveCamera();
-	cbData.projMatrix.setPerspectiveFovLH(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ());
+	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();	//cbData.viewMatrix = cameraMatrix;
+
+#pragma start region Experiment
+	// save data when player camera
+	if (ActiveCamera == SceneCameraHandler::getInstance()->getPlayerCamera())
+	{
+		cout << "player cam\n";
+		// SETTING UP CONSTANTS
+		cbData.worldMatrix *= temp; //WORLD
+		cbData.viewMatrix = cameraMatrix; // view
+		cbData.projMatrix.setPerspectiveFovLH(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ()); // projection
+
+		SceneCameraHandler::getInstance()->worldmat = cbData.worldMatrix;
+		SceneCameraHandler::getInstance()->viewmat = cbData.viewMatrix;
+		SceneCameraHandler::getInstance()->projmat = cbData.projMatrix;
+	}
+	else //using scene cam
+	{
+		Matrix4x4 camWmat = SceneCameraHandler::getInstance()->worldmat;
+		Matrix4x4 camVmat = SceneCameraHandler::getInstance()->viewmat;
+		Matrix4x4 camPmat = SceneCameraHandler::getInstance()->projmat;
+
+		Matrix4x4 camTmat;
+		camTmat.setIdentity();
+
+		/*GUIDE: transform matrix of the primitves (based from player cam)
+		- VIEW AND PROJECTION - normalized projection 2D objects
+		- VIEW  - projected 3D objects (transformed)
+		- including WORLD matrix messes up the coordinates
+		*/
+
+		//camTmat *= camWmat; // WORLD
+		camTmat *= camVmat; // VIEW
+		camTmat *= camPmat; // PROJ
+
+		cout << "scene cam\n";
+
+		// SETTING UP CONSTANTS
+		temp *= camTmat; // experiment
+		cbData.worldMatrix *= temp; //world
+		cbData.viewMatrix = cameraMatrix; // view
+		cbData.projMatrix.setPerspectiveFovLH(ActiveCamera->getFOV(), ActiveCamera->getAspectRatio(), ActiveCamera->getNearZ(), ActiveCamera->getFarZ()); // projection
+		//cbData.projMatrix.setOrthoLH(width, height, ActiveCamera->getNearZ(), ActiveCamera->getFarZ());
+	}
+#pragma endregion Experiment
+
 
 	this->constantBuffer->update(deviceContext, &cbData);
 

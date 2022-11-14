@@ -16,7 +16,6 @@ public:
 	Camera* getSceneCamera();
 	Camera* getPlayerCamera();
 
-	void SetSceneCamera(Camera* sceneCam);
 	void SetPlayerCamera(Camera* playerCam);
 
 	void switchCamera(bool isUsingPlayerCam);

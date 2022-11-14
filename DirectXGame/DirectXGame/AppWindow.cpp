@@ -78,7 +78,7 @@ void AppWindow::onCreate()
 	cameraObj->setFarZ(10);
 
 	ActiveCamera->setAspect(aspectRatio);
-	ActiveCamera->setFOV(aspectRatio);
+	ActiveCamera->setFOV(fov);
 	ActiveCamera->setNearZ(1);
 	ActiveCamera->setFarZ(100);
 
@@ -110,11 +110,8 @@ void AppWindow::onCreate()
 	cubeObj2->setPosition(-1.5, 3.0, -2.0f);
 	objList.push_back(cubeObj2);
 
-
-
 	// Initialize UIManager
 	UIManager::getInstance()->initialize(Window::getHWND());
-
 }
 
 void AppWindow::onUpdate()
