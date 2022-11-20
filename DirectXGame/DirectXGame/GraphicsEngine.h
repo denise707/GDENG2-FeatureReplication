@@ -3,15 +3,9 @@
 
 #include "AUIScreen.h"
 
-class SwapChain;
-class DeviceContext;
-class VertexBuffer;
-class IndexBuffer;
-class ConstantBuffer;
-class VertexShader;
-class PixelShader;
-class TexturedVertexBuffer;
-class TVertexBuffer;
+#include"Prerequisites.h"
+#include "TextureManager.h"
+
 
 
 class GraphicsEngine
@@ -29,7 +23,7 @@ public:
 	DeviceContext* getImmediateDeviceContext();
 	VertexBuffer* createVertexBuffer();
 	TVertexBuffer* createTVertexBuffer();
-	TexturedVertexBuffer* createTexturedVertexBuffer();
+	//TexturedVertexBuffer* createTexturedVertexBuffer();
 	IndexBuffer* createIndexBuffer();
 	ConstantBuffer* createConstantBuffer();
 	VertexShader* createVertexShader(const void* shader_byte_code, size_t byte_code_size);
@@ -37,6 +31,9 @@ public:
 
 	ID3D11ShaderResourceView* getTexture();
 	ID3D11SamplerState* getSamplerState();
+
+	TextureManager* getTextureManager();
+
 
 
 public:
@@ -72,6 +69,8 @@ private:
 	void InitRenderStates();
 
 	ID3D11SamplerState* samplerState;
+	TextureManager* textureManager = nullptr;
+
 
 
 private:

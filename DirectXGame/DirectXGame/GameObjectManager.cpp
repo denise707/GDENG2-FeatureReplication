@@ -4,6 +4,7 @@
 #include "Pyramid.h"
 #include "OutlineGizmo.h"
 #include "MergedActor.h"
+#include "TextureManager.h"
 #include <iostream>
 
 GameObjectManager::GameObjectManager()
@@ -73,7 +74,8 @@ void GameObjectManager::changeBoxScale(int i, float x, float y, float z)
 
 void GameObjectManager::initalizePlayerStart()
 {
-	TexturedQuad* playerStart = new TexturedQuad("PlayerStart", "flag.jpg");
+	Texture* texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets\\Textures\\start.jpg");
+	TexturedQuad* playerStart = new TexturedQuad("PlayerStart", texture);
 	objList.push_back((playerStart));
 	selectedObjList.push_back(playerStart->isSelected);
 }

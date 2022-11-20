@@ -163,6 +163,10 @@
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="MergedActor.cpp" />
     <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Resource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -283,6 +287,13 @@
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="MergedActor.h" />
     <ClInclude Include="Pyramid.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Prerequisites.h">
+      <Filter>GameEngine\Helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Logo.jpg" />

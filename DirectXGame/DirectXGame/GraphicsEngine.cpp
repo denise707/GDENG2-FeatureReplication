@@ -18,6 +18,11 @@
 
 GraphicsEngine::GraphicsEngine()
 {
+	try
+	{
+		textureManager = new TextureManager();
+	}
+	catch (...) { throw std::exception("TextureManager not created successfully"); }
 }
 
 bool GraphicsEngine::init()
@@ -108,12 +113,6 @@ TVertexBuffer* GraphicsEngine::createTVertexBuffer()
 	return new TVertexBuffer();
 }
 
-
-TexturedVertexBuffer* GraphicsEngine::createTexturedVertexBuffer()
-{
-	return new TexturedVertexBuffer();
-}
-
 IndexBuffer* GraphicsEngine::createIndexBuffer()
 {
 	return new IndexBuffer();
@@ -153,6 +152,11 @@ PixelShader* GraphicsEngine::createPixelShader(const void* shader_byte_code, siz
 ID3D11SamplerState* GraphicsEngine::getSamplerState()
 {
 	return samplerState;
+}
+
+TextureManager* GraphicsEngine::getTextureManager()
+{
+	return this->textureManager;
 }
 
 bool GraphicsEngine::compileVertexShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size)
