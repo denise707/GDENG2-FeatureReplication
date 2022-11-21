@@ -31,6 +31,8 @@ public:
 
 	void setDepthStencilState();
 
+	void setBlendState();
+
 	void setWireframeRenderMode();
 	void setSolidRenderMode();
 

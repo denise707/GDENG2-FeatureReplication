@@ -41,12 +41,14 @@ public:
 	bool compilePixelShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size);
 	void releaseCompiledShader();
 	void createStencilState(String mode);
+	void createBlendState(String mode);
 	void initializeSamplers();
 
 public:
 	static GraphicsEngine* get();
 	ID3D11Device* getDevice();
 	ID3D11DepthStencilState* getStencilState();
+	ID3D11BlendState* getBlendState();
 	ID3D11RasterizerState* mWireframeRS;
 	ID3D11RasterizerState* mSolidRS;
 private:
@@ -71,7 +73,8 @@ private:
 	ID3D11SamplerState* samplerState;
 	TextureManager* textureManager = nullptr;
 
-
+private:
+	ID3D11BlendState* blendState;
 
 private:
 	friend class SwapChain;

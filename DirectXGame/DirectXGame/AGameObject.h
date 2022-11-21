@@ -71,13 +71,14 @@ public:
 		Vector2D texCoord;
 	};
 
-	_declspec(align(16))
+	_declspec(align(32))
 		struct CBData
 	{
 		Matrix4x4 worldMatrix;
 		Matrix4x4 viewMatrix;
 		Matrix4x4 projMatrix;
 		float time;
+		float alpha;
 	};
 
 	Matrix4x4 localMatrix;
