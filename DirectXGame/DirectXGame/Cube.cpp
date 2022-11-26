@@ -189,12 +189,17 @@ void Cube::draw(int width, int height)
 	temp.setTranslation(getLocalPosition());
 	cbData.worldMatrix *= temp;
 
+	this->localMatrix = cbData.worldMatrix;
+
 	//Add camera transformation
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
+
+	float fov = cam->getFOVinRad();
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width)/(float)height, cam->getzNear(), cam->getzFar());
 
 	this->constantBuffer->update(deviceContext, &cbData);
 

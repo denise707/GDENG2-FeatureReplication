@@ -11,6 +11,8 @@
 #include <d3d11.h>
 #include "OutlineGizmo.h"
 #include "UIManager.h"
+#include "GizmoManager.h"
+
 #include "GameObjectManager.h"
 
 vector<bool> AppWindow::selectedObjList = {false, false, false};
@@ -69,6 +71,7 @@ void AppWindow::onCreate()
 	//Create Object and Gizmo Instances
 	GameObjectManager::get()->initialize();
 
+	GizmoManager::getInstance()->initialize();
 	// Initialize UIManager
 	UIManager::getInstance()->initialize(Window::getHWND());
 

@@ -20,7 +20,9 @@ void GameObjectManager::initialize()
 	width = UIManager::WINDOW_WIDTH;
 	height = UIManager::WINDOW_HEIGHT;
 
-	initalizePlayerStart();
+	//initalizePlayerStart();
+
+	createCube();
 }
 
 void GameObjectManager::createCube()
@@ -74,7 +76,7 @@ void GameObjectManager::changeBoxScale(int i, float x, float y, float z)
 
 void GameObjectManager::initalizePlayerStart()
 {
-	Texture* texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets\\Textures\\start.jpg");
+	Texture* texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets\\Textures\\playerStart.png");
 	TexturedQuad* playerStart = new TexturedQuad("PlayerStart", texture);
 	objList.push_back((playerStart));
 	selectedObjList.push_back(playerStart->isSelected);

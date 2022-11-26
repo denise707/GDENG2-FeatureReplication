@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AGameObject.cpp" />
+    <ClCompile Include="AGizmoScreen.cpp" />
     <ClCompile Include="AppWindow.cpp" />
     <ClCompile Include="AUIScreen.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -146,9 +147,11 @@
     <ClCompile Include="DeviceContext.cpp" />
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="GizmoManager.cpp" />
     <ClCompile Include="GraphicsEngine.cpp" />
     <ClCompile Include="HierarchyScreen.cpp" />
     <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_dx11.cpp" />
@@ -173,6 +176,7 @@
     <ClCompile Include="TexturedQuad.cpp" />
     <ClCompile Include="TexturedVertexBuffer.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TransformGizmoScreen.cpp" />
     <ClCompile Include="TVertexBuffer.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -181,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AGameObject.h" />
+    <ClInclude Include="AGizmoScreen.h" />
     <ClInclude Include="AppWindow.h" />
     <ClInclude Include="AUIScreen.h" />
     <ClInclude Include="Camera.h" />
@@ -189,10 +194,12 @@
     <ClInclude Include="DeviceContext.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="GizmoManager.h" />
     <ClInclude Include="GraphicsEngine.h" />
     <ClInclude Include="HierarchyScreen.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
+    <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="imgui_impl_dx11.h" />
     <ClInclude Include="imgui_impl_win32.h" />
     <ClInclude Include="imgui_internal.h" />
@@ -221,8 +228,10 @@
     <ClInclude Include="TexturedQuad.h" />
     <ClInclude Include="TexturedVertexBuffer.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="TransformGizmoScreen.h" />
     <ClInclude Include="TVertexBuffer.h" />
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Vector4D.h" />
@@ -231,7 +240,24 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Logo.jpg" />
+    <FxCompile Include="PixelShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="TexturedPixelShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="TexturedVertexShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="TPixelShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="TVertexShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

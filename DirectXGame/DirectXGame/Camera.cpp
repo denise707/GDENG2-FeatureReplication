@@ -1,7 +1,9 @@
 #include "Camera.h"
 #include "InputSystem.h"
 #include "EngineTime.h"
+#include "UIManager.h"
 #include <iostream>
+#include "Utils.h"
 
 Camera::Camera(string name) : AGameObject(name)
 {
@@ -9,7 +11,6 @@ Camera::Camera(string name) : AGameObject(name)
 	m_world_cam.setTranslation(this->getLocalPosition());
 	this->updateViewMatrix();
 	InputSystem::getInstance()->addListener(this);
-	originalPos = this->localMatrix;
 };
 
 Camera::~Camera()
@@ -62,7 +63,20 @@ Matrix4x4 Camera::getViewMatrix()
 {
 	return this->localMatrix;
 }
-//
+
+
+Matrix4x4 Camera::getProjectionMatrix()
+{
+	Matrix4x4 projectionMatrix;
+	projectionMatrix.setIdentity();
+	
+	float var = this->aspectRatio = (float)width / (float)height;
+
+	
+	projectionMatrix.setPerspectiveFovLH(this->getFOVinRad(), this->aspectRatio, this->zNear, this->zFar);
+
+	return projectionMatrix;
+}
 void Camera::onKeyDown(int key)
 {
 	//if (key == 'W')
@@ -177,5 +191,35 @@ void Camera::updateViewMatrix()
 	world_cam.inverse();
 
 	this->localMatrix = world_cam;
+}
+
+float Camera::getFOVinRad()
+{
+	float fov;
+	 fov = Utils::degToRad(this->FOV);
+	 return fov;
+};
+
+float Camera::getFOVinDeg()
+{
+	return this->FOV;
+};
+
+float Camera::getAspectRatio()
+{
+	return this->aspectRatio;
+
+}
+
+float Camera::getzNear()
+{
+	return this->zNear;
+
+}
+
+float Camera::getzFar()
+{
+	return this->zFar;
+
 }
 
