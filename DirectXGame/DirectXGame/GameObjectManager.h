@@ -26,7 +26,12 @@ public:
 	void instantiateMergedActor(int i);
 	void enableBox(int index, bool isEnable);
 	void changeBoxScale(int i, float x, float y, float z);
+
+	void setSelectedObject(AGameObject* selectedObject);
+	AGameObject* getSelectedObject();
+
 private:
 	void initalizePlayerStart();
+	AGameObject* selectedObject = nullptr;
 };
 

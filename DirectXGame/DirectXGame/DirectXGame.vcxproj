@@ -172,7 +172,6 @@
     <ClCompile Include="SceneCameraHandler.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TexturedCube.cpp" />
     <ClCompile Include="TexturedQuad.cpp" />
     <ClCompile Include="TexturedVertexBuffer.cpp" />
     <ClCompile Include="TextureManager.cpp" />
@@ -224,7 +223,6 @@
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TexturedCube.h" />
     <ClInclude Include="TexturedQuad.h" />
     <ClInclude Include="TexturedVertexBuffer.h" />
     <ClInclude Include="TextureManager.h" />

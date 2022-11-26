@@ -109,6 +109,8 @@ void TexturedQuad::update(float delta_time)
 
 void TexturedQuad::draw(int width, int height)
 {
+	this->isSelected = false;
+	
 	setLookAt(SceneCameraHandler::getInstance()->getSceneCamera()->getLocalPosition());
 
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
@@ -126,9 +128,9 @@ void TexturedQuad::draw(int width, int height)
 	Matrix4x4 world_cam;
 	world_cam.setIdentity();
 
-	temp.setIdentity();
+	/*temp.setIdentity();
 	temp.setScale(getLocalScale());
-	cbData.worldMatrix *= temp;
+	cbData.worldMatrix *= temp;*/
 
 	temp.setIdentity();
 	temp.setRotationX((getLocalRotation().m_x));
@@ -162,8 +164,6 @@ void TexturedQuad::draw(int width, int height)
 	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
 
 	//SET TEXTURE
-	/*GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShaderSamplers(0, 1, samplerState);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setShaderResources(0, 1, this->myTexture);*/
 	GraphicsEngine::get()->getImmediateDeviceContext()->setTexture(pixelShader, this->myTex);
 
 
@@ -221,8 +221,10 @@ void TexturedQuad::drawGizmo(int width, int height)
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
+
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
 
 	this->constantBuffer->update(deviceContext, &cbData);
 

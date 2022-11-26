@@ -169,8 +169,9 @@ void Pyramid::draw(int width, int height)
 	cbData.viewMatrix = cameraMatrix;
 
 	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
+
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), cam->getAspectRatio(), cam->getzNear(), cam->getzFar());
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
 
 	this->constantBuffer->update(deviceContext, &cbData);
 
@@ -230,8 +231,10 @@ void Pyramid::drawGizmo(int width, int height)
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
+
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
 
 	this->constantBuffer->update(deviceContext, &cbData);
 
@@ -291,8 +294,10 @@ void Pyramid::drawBox(int width, int height)
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
+
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
 
 	this->constantBuffer->update(deviceContext, &cbData);
 

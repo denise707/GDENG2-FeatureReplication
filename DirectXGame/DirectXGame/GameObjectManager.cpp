@@ -20,9 +20,7 @@ void GameObjectManager::initialize()
 	width = UIManager::WINDOW_WIDTH;
 	height = UIManager::WINDOW_HEIGHT;
 
-	//initalizePlayerStart();
-
-	createCube();
+	initalizePlayerStart();
 }
 
 void GameObjectManager::createCube()
@@ -72,6 +70,17 @@ void GameObjectManager::enableBox(int index, bool isEnable)
 void GameObjectManager::changeBoxScale(int i, float x, float y, float z)
 {
 	objList[i]->boundBoxScale = Vector3D(x, y, z);
+}
+
+void GameObjectManager::setSelectedObject(AGameObject* selectedObject)
+{
+	if (selectedObject != this->selectedObject)
+		this->selectedObject = selectedObject;
+}
+
+AGameObject* GameObjectManager::getSelectedObject()
+{
+	return selectedObject;
 }
 
 void GameObjectManager::initalizePlayerStart()

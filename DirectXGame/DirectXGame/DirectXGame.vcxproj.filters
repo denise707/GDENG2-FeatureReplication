@@ -189,9 +189,6 @@
     <ClCompile Include="GameObjectManager.cpp">
       <Filter>GameEngine\Managers\GameObjectManager</Filter>
     </ClCompile>
-    <ClCompile Include="TexturedCube.cpp">
-      <Filter>GameEngine\Primitive\Textured</Filter>
-    </ClCompile>
     <ClCompile Include="TexturedQuad.cpp">
       <Filter>GameEngine\Primitive\Textured</Filter>
     </ClCompile>
@@ -348,9 +345,6 @@
       <Filter>GameEngine\Managers\GameObjectManager</Filter>
     </ClInclude>
     <ClInclude Include="TexturedQuad.h">
-      <Filter>GameEngine\Primitive\Textured</Filter>
-    </ClInclude>
-    <ClInclude Include="TexturedCube.h">
       <Filter>GameEngine\Primitive\Textured</Filter>
     </ClInclude>
     <ClInclude Include="MergedActor.h">

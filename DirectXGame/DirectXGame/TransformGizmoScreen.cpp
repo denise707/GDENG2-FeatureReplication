@@ -49,17 +49,14 @@ void TransformGizmoScreen::drawUI()
 	ImGui::End();
 #pragma endregion Gizmo
 
-
 	ImGuizmo::BeginFrame();
-
 	// get the selected object from the game object manager
-	this->selectedObject = GameObjectManager::get()->objList[0];
-
-	// 
+	this->selectedObject = GameObjectManager::get()->getSelectedObject();
 	if (this->selectedObject != nullptr)
 	{
 		UpdateTransform();
 	}
+
 }
 
 void TransformGizmoScreen::UpdateTransform()
@@ -78,26 +75,23 @@ void TransformGizmoScreen::UpdateTransform()
 	if (this->isTranslating || this->isRotating || this->isScaling)
 	{
 		if (this->isTranslating)
-		{
+		{	// display gizmo
 			Manipulate(viewMatPtr, projMatPtr, ImGuizmo::TRANSLATE, ImGuizmo::LOCAL, worldMatPtr);
 		}
 		else if (this->isScaling)
-		{
+		{	// display gizmo
 			Manipulate(viewMatPtr, projMatPtr, ImGuizmo::SCALE, ImGuizmo::LOCAL, worldMatPtr);
 		}
 		else if (this->isRotating)
-		{
+		{	// display gizmo
 			Manipulate(viewMatPtr, projMatPtr, ImGuizmo::ROTATE, ImGuizmo::LOCAL, worldMatPtr);
 		}
+		// variable for decomposition
 		float translate[3], rotate[3], scale[3];
 
 		// decompose matrix to float*
 		ImGuizmo::DecomposeMatrixToComponents(worldMatPtr, translate, rotate, scale);
 
-		cout << "isTranslating " << translate[0] << " " << translate[1] << " " << translate[2] << "\n";
-		cout << "rotation " << rotate[0] << " " << rotate[1] << " " << rotate[2] << "\n";
-		cout << "isScaling " << scale[0] << " " << scale[1] << " " << scale[2] << "\n";
-		//this->selectedObject->setNewMatrix(locationMatrix);
 
 		// update transform
 		this->selectedObject->setPosition(Vector3D(translate[0], translate[1], translate[2]));

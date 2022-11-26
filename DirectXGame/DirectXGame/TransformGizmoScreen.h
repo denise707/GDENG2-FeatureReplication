@@ -17,7 +17,7 @@ private:
 private:
 	AGameObject* selectedObject = nullptr;
 
-	bool isTranslating = false;
+	bool isTranslating = true;
 	bool isRotating = false;
 	bool isScaling = false;
 
