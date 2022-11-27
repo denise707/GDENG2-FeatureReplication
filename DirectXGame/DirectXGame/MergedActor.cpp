@@ -144,7 +144,7 @@ void MergedActor::draw(int width, int height)
 		world_cam.setIdentity();
 
 		temp.setIdentity();
-		temp.setTranslation(getLocalPosition() + objList[i]->getLocalPosition());
+		temp.setTranslation(objList[i]->getLocalPosition());
 		cbData.worldMatrix *= temp;
 
 		temp.setIdentity();
@@ -160,7 +160,7 @@ void MergedActor::draw(int width, int height)
 		cbData.worldMatrix *= temp;
 
 		temp.setIdentity();
-		temp.setScale(getLocalScale() * objList[i]->getLocalScale());
+		temp.setScale((getLocalScale() * objList[i]->getLocalScale()));
 		cbData.worldMatrix *= temp;
 
 		temp.setIdentity();
@@ -171,7 +171,7 @@ void MergedActor::draw(int width, int height)
 		Matrix4x4 translateToOrigin;
 		translateToOrigin.setIdentity();
 		translateToOrigin.setTranslation(Vector3D(0, 0, 0));
-		
+
 		Matrix4x4 newTranslation;
 		newTranslation.setIdentity();
 		newTranslation.setTranslation(getLocalPosition());
@@ -190,9 +190,9 @@ void MergedActor::draw(int width, int height)
 		//Perspective View
 		cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
 
-		objList[i]->getConstantBuffer()->update(deviceContext, &cbData);
-		deviceContext->setConstantBuffer(objList[i]->getVertexShader(), objList[i]->getConstantBuffer());
-		deviceContext->setConstantBuffer(objList[i]->getPixelShader(), objList[i]->getConstantBuffer());
+		this->constantBuffer->update(deviceContext, &cbData);
+		deviceContext->setConstantBuffer(objList[i]->getVertexShader(), this->constantBuffer);
+		deviceContext->setConstantBuffer(objList[i]->getPixelShader(), this->constantBuffer);
 
 		deviceContext->setIndexBuffer(objList[i]->getIndexBuffer());
 		deviceContext->setVertexBuffer(objList[i]->getVertexBuffer());
