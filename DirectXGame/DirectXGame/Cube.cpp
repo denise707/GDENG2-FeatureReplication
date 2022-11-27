@@ -158,6 +158,8 @@ void Cube::draw(int width, int height)
 	CBData cbData = {};
 
 	cbData.time = deltaTime;
+	cbData.alpha = .5;
+
 
 	//Add object transformation
 	Matrix4x4 temp;
@@ -187,12 +189,16 @@ void Cube::draw(int width, int height)
 	temp.setTranslation(getLocalPosition());
 	cbData.worldMatrix *= temp;
 
+	this->localMatrix = cbData.worldMatrix;
+
 	//Add camera transformation
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
+
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width)/(float)height, cam->getzNear(), cam->getzFar());
 
 	this->constantBuffer->update(deviceContext, &cbData);
 
@@ -220,6 +226,8 @@ void Cube::drawGizmo(int width, int height)
 	CBData cbData = {};
 
 	cbData.time = deltaTime;
+	cbData.alpha = .5;
+
 
 	//Add object transformation
 	Matrix4x4 temp;
@@ -253,8 +261,10 @@ void Cube::drawGizmo(int width, int height)
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
+
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width)/(float)height, cam->getzNear(), cam->getzFar());
 
 	this->constantBuffer->update(deviceContext, &cbData);
 
@@ -315,9 +325,12 @@ void Cube::drawBox(int width, int height)
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
-	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
 
+	//Perspective View
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
+
+	//cbData.alpha = .5;
 	this->constantBuffer->update(deviceContext, &cbData);
 
 	//SET DEFAULT SHADER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW

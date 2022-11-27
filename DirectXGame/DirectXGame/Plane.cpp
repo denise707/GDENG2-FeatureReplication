@@ -4,6 +4,7 @@
 #include "GraphicsEngine.h"
 #include "SceneCameraHandler.h"
 
+
 Plane::Plane(string name, void* shaderByteCode, size_t sizeShader) :AGameObject(name)
 {
 	//Create buffers for drawing. Vertex data that needs to be drawn are temporarily placed here.
@@ -121,12 +122,15 @@ void Plane::draw(int width, int height)
 	temp.setTranslation(getLocalPosition());
 	cbData.worldMatrix *= temp;
 
+	this->localMatrix = cbData.worldMatrix;
+
 	//Add camera transformation
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
 
 	//Orthographic View
 	//cbData.projMatrix.setOrthoLH(width / 300.0f, height / 300.0f, -4.0f, 4.0f);

@@ -14,10 +14,22 @@ cbuffer constant: register(b0)
 	row_major float4x4 m_world;
 	row_major float4x4 m_view;
 	row_major float4x4 m_proj;
-	unsigned int m_time;
+	float time;
+	float alpha;
 };
 
 float4 tpsmain(PS_INPUT input) : SV_TARGET
 {
-	return Texture.Sample(TextureSampler,input.texcoord);
+	float4 pixelColor = Texture.Sample(TextureSampler,input.texcoord);
+	clip(pixelColor.a < 0.1f ? -1 : 1);
+
+	// do alpha testing
+
+	return  pixelColor;
+
+	
+
+
+
+
 }

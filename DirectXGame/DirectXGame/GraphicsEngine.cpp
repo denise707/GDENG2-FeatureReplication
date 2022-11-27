@@ -18,6 +18,11 @@
 
 GraphicsEngine::GraphicsEngine()
 {
+	try
+	{
+		textureManager = new TextureManager();
+	}
+	catch (...) { throw std::exception("TextureManager not created successfully"); }
 }
 
 bool GraphicsEngine::init()
@@ -108,12 +113,6 @@ TVertexBuffer* GraphicsEngine::createTVertexBuffer()
 	return new TVertexBuffer();
 }
 
-
-TexturedVertexBuffer* GraphicsEngine::createTexturedVertexBuffer()
-{
-	return new TexturedVertexBuffer();
-}
-
 IndexBuffer* GraphicsEngine::createIndexBuffer()
 {
 	return new IndexBuffer();
@@ -153,6 +152,11 @@ PixelShader* GraphicsEngine::createPixelShader(const void* shader_byte_code, siz
 ID3D11SamplerState* GraphicsEngine::getSamplerState()
 {
 	return samplerState;
+}
+
+TextureManager* GraphicsEngine::getTextureManager()
+{
+	return this->textureManager;
 }
 
 bool GraphicsEngine::compileVertexShader(const wchar_t* file_name, const char* entry_point_name, void** shader_byte_code, size_t* byte_code_size)
@@ -214,6 +218,57 @@ void GraphicsEngine::createStencilState(String mode)
 	m_d3d_device->CreateDepthStencilState(&desc, &m_stencil_state);
 }
 
+void GraphicsEngine::createBlendState(String mode)
+{
+	//Create Blend State
+	D3D11_BLEND_DESC blendDesc;
+	ZeroMemory(&blendDesc, sizeof(blendDesc));
+
+	D3D11_RENDER_TARGET_BLEND_DESC rtbd;
+	ZeroMemory(&rtbd, sizeof(rtbd));
+
+	rtbd.BlendEnable = true; // enable or disable blending
+
+	// PIXEL COLOR
+	rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;     //specifies the blend factor for the source pixel           
+	rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;          //specifies the blend factor for the destination pixel
+	rtbd.BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;      //specifies the RGB blending operation  
+
+	// ALPHA
+	rtbd.SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;     //specifies blend factor for source pixel's alpha component  
+	rtbd.DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;     //specifies the blend factor destination pixel's alpha component
+	rtbd.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD; //the blending operation for the Alpha component            
+
+	//// PIXEL COLOR
+	//rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;     //specifies the blend factor for the source pixel           
+	//rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;          //specifies the blend factor for the destination pixel
+	//rtbd.BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;      //specifies the RGB blending operation  
+
+	//// ALPHA
+	//rtbd.SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;     //specifies blend factor for source pixel's alpha component  
+	//rtbd.DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;     //specifies the blend factor destination pixel's alpha component
+	//rtbd.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD; //the blending operation for the Alpha component   
+
+
+	if (mode == "ALL")
+	{
+		rtbd.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE::D3D11_COLOR_WRITE_ENABLE_ALL; // enable all color
+	}
+	else if (mode == "RED")
+	{
+		rtbd.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE::D3D11_COLOR_WRITE_ENABLE_RED; // enable all color
+
+	}
+
+	blendDesc.RenderTarget[0] = rtbd;
+
+	HRESULT hr = this->m_d3d_device->CreateBlendState(&blendDesc, &blendState);
+	if (FAILED(hr))
+	{
+		cout << " failed to create blend state";
+	}
+}
+
 void GraphicsEngine::initializeSamplers()
 {
 	D3D11_SAMPLER_DESC desc;
@@ -238,6 +293,11 @@ ID3D11Device* GraphicsEngine::getDevice()
 ID3D11DepthStencilState* GraphicsEngine::getStencilState()
 {
 	return this->m_stencil_state;
+}
+
+ID3D11BlendState* GraphicsEngine::getBlendState()
+{
+	return this->blendState;
 }
 
 

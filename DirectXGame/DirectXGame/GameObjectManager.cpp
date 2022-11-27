@@ -4,6 +4,7 @@
 #include "Pyramid.h"
 #include "OutlineGizmo.h"
 #include "MergedActor.h"
+#include "TextureManager.h"
 #include <iostream>
 
 GameObjectManager::GameObjectManager()
@@ -71,9 +72,21 @@ void GameObjectManager::changeBoxScale(int i, float x, float y, float z)
 	objList[i]->boundBoxScale = Vector3D(x, y, z);
 }
 
+void GameObjectManager::setSelectedObject(AGameObject* selectedObject)
+{
+	if (selectedObject != this->selectedObject)
+		this->selectedObject = selectedObject;
+}
+
+AGameObject* GameObjectManager::getSelectedObject()
+{
+	return selectedObject;
+}
+
 void GameObjectManager::initalizePlayerStart()
 {
-	TexturedQuad* playerStart = new TexturedQuad("PlayerStart", "flag.jpg");
+	Texture* texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets\\Textures\\playerStart.png");
+	TexturedQuad* playerStart = new TexturedQuad("PlayerStart", texture);
 	objList.push_back((playerStart));
 	selectedObjList.push_back(playerStart->isSelected);
 }

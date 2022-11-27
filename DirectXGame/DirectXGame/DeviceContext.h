@@ -1,14 +1,6 @@
 #pragma once
 #include <d3d11.h>
-
-class SwapChain;
-class TexturedVertexBuffer;
-class TVertexBuffer;
-class VertexBuffer;
-class IndexBuffer;
-class ConstantBuffer;
-class VertexShader;
-class PixelShader;
+#include "Prerequisites.h"
 
 class DeviceContext
 {
@@ -17,7 +9,7 @@ public:
 	void clearRenderTargetColor(SwapChain* swap_chain, float red, float green, float blue, float alpha);
 
 	void setVertexBuffer(VertexBuffer* vertex_buffer);
-	void setTexturedVertexBuffer(TexturedVertexBuffer* vertex_buffer);
+	//void setTexturedVertexBuffer(TexturedVertexBuffer* vertex_buffer);
 	void setTVertexBuffer(TVertexBuffer* vertex_buffer);
 	void setIndexBuffer(IndexBuffer* index_buffer);
 
@@ -31,10 +23,15 @@ public:
 	void setVertexShader(VertexShader* vertex_shader);
 	void setPixelShader(PixelShader* pixel_shader);
 
+	void setTexture(VertexShader* vertex_shader, Texture* texture);
+	void setTexture(PixelShader* pixel_shader, Texture* texture);
+
 	void setConstantBuffer(VertexShader* vertex_shader, ConstantBuffer* buffer);
 	void setConstantBuffer(PixelShader* pixel_shader, ConstantBuffer* buffer);
 
 	void setDepthStencilState();
+
+	void setBlendState();
 
 	void setWireframeRenderMode();
 	void setSolidRenderMode();

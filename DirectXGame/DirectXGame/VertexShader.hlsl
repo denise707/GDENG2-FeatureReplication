@@ -18,6 +18,8 @@ cbuffer constant: register(b0)
 	row_major float4x4 m_view;
 	row_major float4x4 m_proj;
 	unsigned int m_time;
+	//unsigned float m_alpha;
+
 };
 
 VS_OUTPUT vsmain(VS_INPUT input)

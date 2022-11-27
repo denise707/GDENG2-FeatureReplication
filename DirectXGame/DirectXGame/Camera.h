@@ -21,6 +21,8 @@ public:
 	//virtual void onRightMouseDown(const Point& mouse_pos) override;
 	//virtual void onRightMouseUp(const Point& mouse_pos) override;
 
+	Matrix4x4 getProjectionMatrix();
+
 	//Set's Ver
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;
@@ -30,6 +32,16 @@ public:
 	virtual void onLeftMouseUp(const Point deltaPos) override;
 	virtual void onRightMouseDown(const Point deltaPos) override;
 	virtual void onRightMouseUp(const Point deltaPos) override;
+	
+	float getFOVinRad();
+	float getFOVinDeg();
+
+	float getAspectRatio();
+
+	float getzNear();
+
+	float getzFar();
+
 
 private:
 	void updateViewMatrix();
@@ -56,6 +68,11 @@ private:
 	Matrix4x4 originalPos;
 
 	float mouseDown = false;
+
+	float FOV = 60;
+	float aspectRatio;
+	float zNear = 0.1;
+	float zFar = 1000;
 
 	//bool lmbDown = false;
 

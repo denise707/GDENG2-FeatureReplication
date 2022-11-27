@@ -1,11 +1,13 @@
 #pragma once
 #include "AGameObject.h"
 #include <vector>
+#include"Texture.h"
+
 
 class TexturedQuad : public AGameObject
 {
 public:
-	TexturedQuad(string name, string texture);
+	TexturedQuad(string name, Texture* texture);
 	~TexturedQuad();
 
 	void update(float deltaTime) override;
@@ -24,6 +26,9 @@ private:
 	TVertexBuffer* tVertexBuffer;
 	ID3D11ShaderResourceView* myTexture;
 	ID3D11SamplerState* samplerState;
+
+
+	Texture* myTex;;
 };
 
 

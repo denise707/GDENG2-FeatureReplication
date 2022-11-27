@@ -14,7 +14,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-TexturedQuad::TexturedQuad(string name, string texture) :AGameObject(name)
+TexturedQuad::TexturedQuad(string name, Texture* texture) :AGameObject(name)
 {
 	Vector3D position_list[] =
 	{
@@ -50,13 +50,13 @@ TexturedQuad::TexturedQuad(string name, string texture) :AGameObject(name)
 		2,3,0,  //SECOND TRIANGLE
 	};
 
+	myTex = texture;
 
-	//Index Buffer
 	this->indexBuffer = GraphicsEngine::get()->createIndexBuffer();
 	this->indexBuffer->load(index_list, ARRAYSIZE(index_list));
 
 	//Vertex Shader
-	GraphicsEngine::get()->compileVertexShader(L"TexturedVertexShader.hlsl", "tvsmain", &shaderByteCode, &sizeShader);
+	GraphicsEngine::get()->compileVertexShader(L"TVertexShader.hlsl", "tvsmain", &shaderByteCode, &sizeShader);
 	vertexShader = GraphicsEngine::get()->createVertexShader(shaderByteCode, sizeShader);
 
 	//Vertex Buffer
@@ -80,16 +80,16 @@ TexturedQuad::TexturedQuad(string name, string texture) :AGameObject(name)
 	this->constantBuffer->load(&cbData, sizeof(CBData));
 
 
-	// loading texture from file
-	GraphicsEngine::get()->initializeSamplers();
+	//// loading texture from file
+	//GraphicsEngine::get()->initializeSamplers();
 
-	int width = 0;
-	int height = 0;
-	bool ret = LoadTextureFromFile(texture.c_str(), &myTexture, &width, &height);
-	IM_ASSERT(ret);
+	//int width = 0;
+	//int height = 0;
+	//bool ret = LoadTextureFromFile(texture.c_str(), &myTexture, &width, &height);
+	//IM_ASSERT(ret);
 
-	//get sampler state in graphics engine
-	this->samplerState = GraphicsEngine::get()->getSamplerState();
+	////get sampler state in graphics engine
+	//this->samplerState = GraphicsEngine::get()->getSamplerState();
 
 	setAnimSpeed(4);
 }
@@ -109,6 +109,8 @@ void TexturedQuad::update(float delta_time)
 
 void TexturedQuad::draw(int width, int height)
 {
+	this->isSelected = false;
+	
 	setLookAt(SceneCameraHandler::getInstance()->getSceneCamera()->getLocalPosition());
 
 	GraphicsEngine* graphEngine = GraphicsEngine::get();
@@ -126,9 +128,9 @@ void TexturedQuad::draw(int width, int height)
 	Matrix4x4 world_cam;
 	world_cam.setIdentity();
 
-	temp.setIdentity();
+	/*temp.setIdentity();
 	temp.setScale(getLocalScale());
-	cbData.worldMatrix *= temp;
+	cbData.worldMatrix *= temp;*/
 
 	temp.setIdentity();
 	temp.setRotationX((getLocalRotation().m_x));
@@ -146,13 +148,15 @@ void TexturedQuad::draw(int width, int height)
 	temp.setTranslation(getLocalPosition());
 	cbData.worldMatrix *= temp;
 
+	this->localMatrix = cbData.worldMatrix;
+
 	//Add camera transformation
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
-
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
 	this->constantBuffer->update(deviceContext, &cbData);
 
 	//SET DEFAULT SHADER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
@@ -160,8 +164,8 @@ void TexturedQuad::draw(int width, int height)
 	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(pixelShader);
 
 	//SET TEXTURE
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShaderSamplers(0, 1, samplerState);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setShaderResources(0, 1, this->myTexture);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setTexture(pixelShader, this->myTex);
+
 
 
 	deviceContext->setSolidRenderMode();
@@ -217,8 +221,10 @@ void TexturedQuad::drawGizmo(int width, int height)
 	Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
 	cbData.viewMatrix = cameraMatrix;
 
+	Camera* cam = SceneCameraHandler::getInstance()->getSceneCamera();
+
 	//Perspective View
-	cbData.projMatrix.setPerspectiveFovLH(1.57f, ((float)width / (float)height), 0.1f, 100.0f);
+	cbData.projMatrix.setPerspectiveFovLH(cam->getFOVinRad(), float(width) / (float)height, cam->getzNear(), cam->getzFar());
 
 	this->constantBuffer->update(deviceContext, &cbData);
 

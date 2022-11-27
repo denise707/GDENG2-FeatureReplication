@@ -49,20 +49,62 @@
     <Filter Include="GameEngine\Camera">
       <UniqueIdentifier>{94d5f278-fbe8-424b-ab16-22b1fc6eaaa9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\IMGUI">
-      <UniqueIdentifier>{2243a663-b7f7-4bef-b0f0-a336aabf2908}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameEngine\UISystem">
-      <UniqueIdentifier>{6082ac6a-c999-4af7-8e80-9e155700fcd0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameEngine\UISystem\Screens">
-      <UniqueIdentifier>{38158401-81c3-4762-b270-fc0ed890302e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameEngine\Helper">
       <UniqueIdentifier>{2dae4ea6-a80e-437f-bf01-93ba5d2a332d}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameEngine\Gizmos">
       <UniqueIdentifier>{46e362e9-3c40-4e98-b137-9c47629c0821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Primitive\Textured">
+      <UniqueIdentifier>{e2a1307b-8036-4ee8-badf-ce7adc0fd396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Primitive\Merged">
+      <UniqueIdentifier>{7a8b3931-043e-43d0-9205-749c50584b35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Primitive\Basic">
+      <UniqueIdentifier>{e1319adb-6b80-4895-a230-fcef905e27d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UserInterface">
+      <UniqueIdentifier>{4c44617a-3e54-4055-b616-79120daa9bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UserInterface\UISystem">
+      <UniqueIdentifier>{6082ac6a-c999-4af7-8e80-9e155700fcd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UserInterface\UISystem\Screens">
+      <UniqueIdentifier>{38158401-81c3-4762-b270-fc0ed890302e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UserInterface\GizmoSystem">
+      <UniqueIdentifier>{82ef4142-baf5-48da-a653-a9d9ae4003ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UserInterface\GizmoSystem\Screen">
+      <UniqueIdentifier>{3c09cd1a-f564-4734-83a5-66081cca444b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\IMGUI / IMGUIZMO">
+      <UniqueIdentifier>{2243a663-b7f7-4bef-b0f0-a336aabf2908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\IMGUI / IMGUIZMO\ImGui">
+      <UniqueIdentifier>{11c59234-535e-4ce8-90ef-b45c0e1f275a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\IMGUI / IMGUIZMO\imGuizmo">
+      <UniqueIdentifier>{2ee0f2dd-4d45-493d-80ce-00826adadaf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GraphicsEngine\Shaders">
+      <UniqueIdentifier>{1aa47402-1013-4c50-aa0e-fbb1cc9674ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GraphicsEngine\Shaders\Textured">
+      <UniqueIdentifier>{dc03b28a-a870-46f8-8a70-74bc17f9d757}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Managers">
+      <UniqueIdentifier>{cdbcf2ee-2510-436f-81a1-c953ac0ecce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Managers\ResourceManager">
+      <UniqueIdentifier>{ae005e90-988a-427a-ab9a-4e0ff1f64ca9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Managers\TextureManager">
+      <UniqueIdentifier>{db53b932-04b9-4b28-ae43-dfd70515c457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Managers\GameObjectManager">
+      <UniqueIdentifier>{e93e3e2a-8f0f-4159-9bfb-c88283822888}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,12 +147,6 @@
     <ClCompile Include="AGameObject.cpp">
       <Filter>GameEngine\Primitive</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>GameEngine\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>GameEngine\Primitive</Filter>
-    </ClCompile>
     <ClCompile Include="EngineTime.cpp">
       <Filter>GameEngine\EngineTime</Filter>
     </ClCompile>
@@ -120,49 +156,90 @@
     <ClCompile Include="SceneCameraHandler.cpp">
       <Filter>GameEngine\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_dx11.cpp">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_win32.cpp">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_tables.cpp">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClCompile>
     <ClCompile Include="AUIScreen.cpp">
-      <Filter>GameEngine\UISystem</Filter>
+      <Filter>GameEngine\UserInterface\UISystem</Filter>
     </ClCompile>
     <ClCompile Include="UIManager.cpp">
-      <Filter>GameEngine\UISystem</Filter>
+      <Filter>GameEngine\UserInterface\UISystem</Filter>
     </ClCompile>
     <ClCompile Include="HierarchyScreen.cpp">
-      <Filter>GameEngine\UISystem\Screens</Filter>
+      <Filter>GameEngine\UserInterface\UISystem\Screens</Filter>
     </ClCompile>
     <ClCompile Include="MenuScreen.cpp">
-      <Filter>GameEngine\UISystem\Screens</Filter>
+      <Filter>GameEngine\UserInterface\UISystem\Screens</Filter>
     </ClCompile>
     <ClCompile Include="OutlineGizmo.cpp">
       <Filter>GameEngine\Gizmos</Filter>
     </ClCompile>
-    <ClCompile Include="TexturedVertexBuffer.cpp" />
-    <ClCompile Include="TexturedQuad.cpp" />
-    <ClCompile Include="TexturedCube.cpp" />
-    <ClCompile Include="TVertexBuffer.cpp" />
-    <ClCompile Include="GameObjectManager.cpp" />
-    <ClCompile Include="MergedActor.cpp" />
-    <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="Resource.cpp">
+      <Filter>GameEngine\Managers\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>GameEngine\Managers\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturedVertexBuffer.cpp">
+      <Filter>GameEngine\GraphicsEngine\VertexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>GameEngine\Managers\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>GameEngine\Managers\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>GameEngine\Managers\GameObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturedQuad.cpp">
+      <Filter>GameEngine\Primitive\Textured</Filter>
+    </ClCompile>
+    <ClCompile Include="MergedActor.cpp">
+      <Filter>GameEngine\Primitive\Merged</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>GameEngine\Primitive\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>GameEngine\Primitive\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Pyramid.cpp">
+      <Filter>GameEngine\Primitive\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="TVertexBuffer.cpp">
+      <Filter>GameEngine\GraphicsEngine\VertexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GizmoManager.cpp">
+      <Filter>GameEngine\UserInterface\GizmoSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AGizmoScreen.cpp">
+      <Filter>GameEngine\UserInterface\GizmoSystem\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformGizmoScreen.cpp">
+      <Filter>GameEngine\UserInterface\GizmoSystem\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\imGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -216,12 +293,6 @@
     <ClInclude Include="AGameObject.h">
       <Filter>GameEngine\Primitive</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>GameEngine\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>GameEngine\Primitive</Filter>
-    </ClInclude>
     <ClInclude Include="EngineTime.h">
       <Filter>GameEngine\EngineTime</Filter>
     </ClInclude>
@@ -231,60 +302,124 @@
     <ClInclude Include="SceneCameraHandler.h">
       <Filter>GameEngine\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="imconfig.h">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui.h">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_dx11.h">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_win32.h">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_internal.h">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imstb_rectpack.h">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imstb_textedit.h">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imstb_truetype.h">
-      <Filter>GameEngine\IMGUI</Filter>
-    </ClInclude>
     <ClInclude Include="AUIScreen.h">
-      <Filter>GameEngine\UISystem</Filter>
+      <Filter>GameEngine\UserInterface\UISystem</Filter>
     </ClInclude>
     <ClInclude Include="UIManager.h">
-      <Filter>GameEngine\UISystem</Filter>
+      <Filter>GameEngine\UserInterface\UISystem</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>GameEngine\Helper</Filter>
     </ClInclude>
     <ClInclude Include="HierarchyScreen.h">
-      <Filter>GameEngine\UISystem\Screens</Filter>
+      <Filter>GameEngine\UserInterface\UISystem\Screens</Filter>
     </ClInclude>
     <ClInclude Include="MenuScreen.h">
-      <Filter>GameEngine\UISystem\Screens</Filter>
+      <Filter>GameEngine\UserInterface\UISystem\Screens</Filter>
     </ClInclude>
     <ClInclude Include="OutlineGizmo.h">
       <Filter>GameEngine\Gizmos</Filter>
     </ClInclude>
-    <ClInclude Include="TexturedVertexBuffer.h" />
-    <ClInclude Include="TexturedQuad.h" />
     <ClInclude Include="Vector2D.h">
       <Filter>GameEngine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="TexturedCube.h" />
-    <ClInclude Include="TVertexBuffer.h" />
-    <ClInclude Include="GameObjectManager.h" />
-    <ClInclude Include="MergedActor.h" />
-    <ClInclude Include="Pyramid.h" />
+    <ClInclude Include="Prerequisites.h">
+      <Filter>GameEngine\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>GameEngine\Managers\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>GameEngine\Managers\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturedVertexBuffer.h">
+      <Filter>GameEngine\GraphicsEngine\VertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>GameEngine\Managers\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>GameEngine\Managers\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>GameEngine\Managers\GameObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturedQuad.h">
+      <Filter>GameEngine\Primitive\Textured</Filter>
+    </ClInclude>
+    <ClInclude Include="MergedActor.h">
+      <Filter>GameEngine\Primitive\Merged</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>GameEngine\Primitive\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>GameEngine\Primitive\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Pyramid.h">
+      <Filter>GameEngine\Primitive\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="TVertexBuffer.h">
+      <Filter>GameEngine\GraphicsEngine\VertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GizmoManager.h">
+      <Filter>GameEngine\UserInterface\GizmoSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AGizmoScreen.h">
+      <Filter>GameEngine\UserInterface\GizmoSystem\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformGizmoScreen.h">
+      <Filter>GameEngine\UserInterface\GizmoSystem\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo.h">
+      <Filter>GameEngine\IMGUI / IMGUIZMO\imGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>GameEngine\Helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Logo.jpg" />
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>GameEngine\GraphicsEngine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>GameEngine\GraphicsEngine\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPixelShader.hlsl">
+      <Filter>GameEngine\GraphicsEngine\Shaders\Textured</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedVertexShader.hlsl">
+      <Filter>GameEngine\GraphicsEngine\Shaders\Textured</Filter>
+    </FxCompile>
+    <FxCompile Include="TPixelShader.hlsl">
+      <Filter>GameEngine\GraphicsEngine\Shaders\Textured</Filter>
+    </FxCompile>
+    <FxCompile Include="TVertexShader.hlsl">
+      <Filter>GameEngine\GraphicsEngine\Shaders\Textured</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

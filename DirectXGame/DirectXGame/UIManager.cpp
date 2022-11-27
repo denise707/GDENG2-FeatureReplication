@@ -3,6 +3,7 @@
 #include "imgui_impl_win32.h"
 #include "MenuScreen.h"
 #include "HierarchyScreen.h"
+#include "GizmoManager.h"
 
 UIManager* UIManager::sharedInstance = NULL;
 
@@ -26,6 +27,8 @@ void UIManager::drawAllUI()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+
+	GizmoManager::getInstance()->drawAllGizmo();
 
 	for(int i = 0; i < this->uiList.size(); i++)
 	{
