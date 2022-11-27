@@ -52,7 +52,7 @@ public:
 	PixelShader* getPixelShader();
 
 	bool enableBoundingBox = false;
-	Vector3D boundBoxScale = Vector3D(1.1, 1.1, 1.1);
+	Vector3D boundBoxScale = Vector3D(1, 1, 1);
 
 	void reset();
 	bool isSelected = false;

@@ -91,28 +91,6 @@ void HierarchyScreen::drawUI()
             ImGui::Text(currGO.c_str());
             ImGui::Spacing();
 
-            // update inspector values
-            xP = GameObjectManager::get()->objList[index]->getLocalPosition().m_x;
-            yP = GameObjectManager::get()->objList[index]->getLocalPosition().m_y;
-            zP = GameObjectManager::get()->objList[index]->getLocalPosition().m_z;
-
-            ImGui::Text("Position: ");
-            ImGui::SliderFloat("Pos X", &xP, -50.0f, 50.0f);
-            ImGui::SliderFloat("Pos Y", &yP, -50.0f, 50.0f);
-            ImGui::SliderFloat("Pos Z", &zP, -50.0f, 50.0f);
-           
-            bool flag = ImGuizmo::IsUsing;
-            cout << flag << "\n";
-       
-            if (!ImGuizmo::IsOver())
-            {
-                GameObjectManager::get()->changePosition(index, xP, yP, zP);
-            }
-    
-
-            ImGui::Spacing();
-            ImGui::Spacing();
-
             // BOUNDING BOX
             ImGui::Checkbox("Enable Box", &isEnabled);
             GameObjectManager::get()->enableBox(index, isEnabled);

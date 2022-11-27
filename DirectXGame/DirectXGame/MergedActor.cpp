@@ -70,6 +70,7 @@ MergedActor::MergedActor(string name, vector<AGameObject*> toCombine) : AGameObj
 
 		else
 			objList.push_back(objCopy);
+		
 	}
 }
 
@@ -122,6 +123,7 @@ void MergedActor::draw(int width, int height)
 	temp.setTranslation(getLocalPosition());
 	cbData.worldMatrix *= temp;
 
+
 	this->localMatrix = cbData.worldMatrix;
 
 	this->constantBuffer->update(deviceContext, &cbData);
@@ -142,16 +144,6 @@ void MergedActor::draw(int width, int height)
 		world_cam.setIdentity();
 
 		temp.setIdentity();
-		temp.setScale(getLocalScale());
-		cbData.worldMatrix *= temp;
-
-		//temp.setIdentity();
-		//temp.setTranslation(getLocalPosition() * -1);
-		//cbData.worldMatrix *= temp;
-
-
-
-		temp.setIdentity();
 		temp.setTranslation(getLocalPosition() + objList[i]->getLocalPosition());
 		cbData.worldMatrix *= temp;
 
@@ -167,6 +159,27 @@ void MergedActor::draw(int width, int height)
 		temp.setRotationZ(getLocalRotation().m_z + objList[i]->getLocalRotation().m_z);
 		cbData.worldMatrix *= temp;
 
+		temp.setIdentity();
+		temp.setScale(getLocalScale() * objList[i]->getLocalScale());
+		cbData.worldMatrix *= temp;
+
+		temp.setIdentity();
+		temp.setTranslation(Vector3D(0, 0, 0));
+		cbData.worldMatrix *= temp;
+
+		//Anchor origin
+		Matrix4x4 translateToOrigin;
+		translateToOrigin.setIdentity();
+		translateToOrigin.setTranslation(Vector3D(0, 0, 0));
+		
+		Matrix4x4 newTranslation;
+		newTranslation.setIdentity();
+		newTranslation.setTranslation(getLocalPosition());
+
+		translateToOrigin *= cbData.worldMatrix;
+		translateToOrigin *= newTranslation;
+
+		cbData.worldMatrix = translateToOrigin;
 
 		//Add camera transformation
 		Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
@@ -213,7 +226,7 @@ void MergedActor::drawGizmo(int width, int height)
 		world_cam.setIdentity();
 
 		temp.setIdentity();
-		temp.setScale(getLocalScale() * 1.05f);
+		temp.setTranslation(objList[i]->getLocalPosition());
 		cbData.worldMatrix *= temp;
 
 		temp.setIdentity();
@@ -229,8 +242,26 @@ void MergedActor::drawGizmo(int width, int height)
 		cbData.worldMatrix *= temp;
 
 		temp.setIdentity();
-		temp.setTranslation(getLocalPosition() + objList[i]->getLocalPosition());
+		temp.setScale((getLocalScale() * objList[i]->getLocalScale()) * 1.05f);
 		cbData.worldMatrix *= temp;
+
+		temp.setIdentity();
+		temp.setTranslation(Vector3D(0, 0, 0));
+		cbData.worldMatrix *= temp;
+
+		//Anchor origin
+		Matrix4x4 translateToOrigin;
+		translateToOrigin.setIdentity();
+		translateToOrigin.setTranslation(Vector3D(0, 0, 0));
+
+		Matrix4x4 newTranslation;
+		newTranslation.setIdentity();
+		newTranslation.setTranslation(getLocalPosition());
+
+		translateToOrigin *= cbData.worldMatrix;
+		translateToOrigin *= newTranslation;
+
+		cbData.worldMatrix = translateToOrigin;
 
 		//Add camera transformation
 		Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
@@ -275,7 +306,7 @@ void MergedActor::drawBox(int width, int height)
 		world_cam.setIdentity();
 
 		temp.setIdentity();
-		temp.setScale(boundBoxScale);
+		temp.setTranslation(objList[i]->getLocalPosition());
 		cbData.worldMatrix *= temp;
 
 		temp.setIdentity();
@@ -291,8 +322,24 @@ void MergedActor::drawBox(int width, int height)
 		cbData.worldMatrix *= temp;
 
 		temp.setIdentity();
-		temp.setTranslation(getLocalPosition() + objList[i]->getLocalPosition());
+		temp.setScale(getLocalScale() * objList[i]->getLocalScale());
 		cbData.worldMatrix *= temp;
+
+		temp.setIdentity();
+		temp.setTranslation(Vector3D(0, 0, 0));
+		cbData.worldMatrix *= temp;
+
+		//Anchor origin
+		Matrix4x4 translateToOrigin;
+		translateToOrigin.setIdentity();
+		translateToOrigin.setTranslation(Vector3D(0, 0, 0));
+
+		Matrix4x4 newTranslation;
+		newTranslation.setIdentity();
+		newTranslation.setTranslation(getLocalPosition());
+
+		translateToOrigin *= cbData.worldMatrix;
+		translateToOrigin *= newTranslation;
 
 		//Add camera transformation
 		Matrix4x4 cameraMatrix = SceneCameraHandler::getInstance()->getSceneCameraViewMatrix();
